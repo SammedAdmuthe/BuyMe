@@ -19,9 +19,9 @@
 		String auctionId = request.getParameter("auctionId");
 		String username = request.getParameter("username");
 		String bidId = request.getParameter("bidId");
-		String mybid = request.getParameter("myBid");
-		
-		int rs = stmt.executeUpdate("insert into bidding(bidId, auctionId, username, bidPrice) values("+"'"+bidId+"',"+"'"+auctionId+"',"+"'"+username+"',"+"'"+mybid+"'"+")");
+		String mybid = request.getParameter("mybid");
+		String upperLimit = request.getParameter("uplimit");
+		int rs = stmt.executeUpdate("insert into bidding(bidId, auctionId, username, bidPrice, upperLimit) values("+"'"+bidId+"',"+"'"+auctionId+"',"+"'"+username+"',"+"'"+mybid+"', '"+upperLimit+"'"+")");
 		response.sendRedirect("home.jsp");
 
 	}catch(Exception e){
