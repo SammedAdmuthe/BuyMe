@@ -29,7 +29,7 @@
 	rs1.next();
  	int currentMaxBid = rs1.getInt("currentMaxBid");
 	%>
-	<form action="bidInsert.jsp" method="get">
+	<form action="bidInsert.jsp" method="post">
 		  <label for="currentbid">Current Bid on this product :</label><br>
  		  <input type="text" id="currentbid" disabled value = "<%=currentMaxBid%>" name="currentbid"><br>
 		  <label for="myBid">Put your bid higher than current bid:</label><br>
