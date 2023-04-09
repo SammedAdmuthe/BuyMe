@@ -63,9 +63,19 @@ td{
 		</form>
 	</div>
 	<div style="padding: 10px;">
-		<h1>Welcome <%= session.getAttribute("username") %>!</h1>
+		<h1>Welcome <span style="color: green"><%= session.getAttribute("username") %></span>!</h1>
+		<div style="display: flex;">
+			<span>Ready to sell a product?</span> &nbsp;
+			<a href='seller.jsp'> Click here!</a>
+		</div>		
 	</div>
-	<input style="width: 94%; margin-left: 10px" type="text" id="myInput" placeholder="Search for names.." title="Type in a name">
+	
+	<div style="height: 30px; background-color: #ededed; margin-left: 10px; margin-right: 15px; text-align: center; padding-top: 5px;">
+		<span style=" margin-left: 10px; font-weight: 600;">Current Listings</span>
+	</div>
+	
+	<!-- <input style="width: 94%; margin-left: 10px" type="text" id="myInput" placeholder="Search for names.." title="Type in a name"> -->
+	
 	<%
 		DBHelper db = new DBHelper();	
 		Connection connection = db.getConnection();
