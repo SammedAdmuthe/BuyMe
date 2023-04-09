@@ -15,13 +15,14 @@
 		<label style="font-weight: 600; color: #0099ff; font-size: 18px">Earn money!</label>
 		<label style="font-weight: 600; color: #00cc99; font-size: 18px">Sell your product by filling the form below.. </label>
 	</div><br><br>
-	<form method = "post" style="padding: 10px; height: 150px;  border: solid 2px #ededed">
+	<form method = "post" action="submitAuction.jsp" style="padding: 10px; height: 200px;  border: solid 2px #ededed">
 		<div style="display: flex;">
-		<div style="width: 35%; display: flex">
+		<div style="width: 40%; display: flex">
 				<div>
 					<label style="font-weight: 600;">Name:</label>&nbsp;<br><br>
 					<label style="font-weight: 600;">Category:</label>&nbsp;<br><br>
-					<label style="font-weight: 600;">Minimum Price:</label>&nbsp;<br><br>
+					<label style="font-weight: 600;">Starting Price:</label>&nbsp;<br><br>
+					<label style="font-weight: 600;">Minimum Selling Price :</label>&nbsp;<br><br>
 				</div>
 				<div>
 				<input type="text" id="productName" name = "productName" required
@@ -31,8 +32,10 @@
 					  <option value="Womens">Womens</option>
 					  <option value="Kids">Kids</option>
 					</select><br><br>
-					<input type="number" id="minPrice" name = "minPrice" required style="width: 180%"
-				      placeholder="Please enter minimum price for the auction"><br><br>
+					<input type="number" id="startingPrice" name = "startingPrice" required style="width: 180%"
+				      placeholder="Please enter starting price for the auction"><br><br>
+				      <input type="number" id="secretPrice" name = "secretPrice" required style="width: 180%"
+				      placeholder="Please enter minimum selling price for the auction"><br><br>
 				</div>
 				
 			</div>
@@ -50,6 +53,7 @@
 		  			<input type="datetime-local" id="auctionEndTime" name="auctionEndTime" required><br><br>
 				</div>	      
 			</div>
+			<input type="text" id="username" name="username" style="display: none" value = "<%=session.getAttribute("username")%>">
 		</div>
 		<div style="margin-left: 30%">
 		    	<input type="submit" id="placeActionSubmit" value="Submit" />	
