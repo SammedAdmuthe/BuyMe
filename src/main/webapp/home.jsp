@@ -120,7 +120,7 @@ td{
 		Connection connection = db.getConnection();
 		try{
 			Statement stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery("Select * from product p join auction a on p.productId = a.auctionId join category c on c.categoryId = p.categoryId");
+			ResultSet rs = stmt.executeQuery("Select * from product p join auction a on p.productId = a.auctionId join category c on c.categoryName = p.categoryName");
 			out.println("<div style='width: 100%; height: calc(100vh - 250px);'>");
 			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Initial Price</th><th>Product Image</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
 			while(rs.next()){

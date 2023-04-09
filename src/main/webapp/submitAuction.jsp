@@ -20,21 +20,47 @@
 		String username = request.getParameter("username");
 		String productName = request.getParameter("productName");
 		String category = request.getParameter("category");
-		String startingPrice = request.getParameter("startingPrice");
-		String secretPrice = request.getParameter("secretPrice");
-		String minIncrement = request.getParameter("minIncrement");
-		String auctionStartTime = request.getParameter("auctionStartTime");
-		String auctionEndTime = request.getParameter("auctionEndTime");
+		float initialPrice = Float.parseFloat(request.getParameter("startingPrice"));
+		float secretMinimumBid = Float.parseFloat(request.getParameter("secretPrice"));
+		float incrementPrice = Float.parseFloat(request.getParameter("minIncrement"));
+		String startTime = request.getParameter("auctionStartTime");
+		String endTime = request.getParameter("auctionEndTime");
 		
+		PreparedStatement ps1=connection.prepareStatement("INSERT INTO product(productName, username, categoryName) VALUES (?,?,?)",Statement.RETURN_GENERATED_KEYS);
+		ps1.setString(1,productName);
+		ps1.setString(2,username);
+		ps1.setString(3, category);
 		
-		
-         //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"); 
+		int rowsAffected=ps1.executeUpdate();
+		if(rowsAffected>0){
+			out.println("New product added successfully!");
+			ResultSet rs=ps1.getGeneratedKeys();
+			int generatedProductId=0;
+			if(rs.next()){
+				generatedProductId = rs.getInt(1);
+			}
 
-		
-		int rs = stmt.executeUpdate("insert into auction(auctionId, productId, username, initialPrice, secretMinimumBid, incrementPrice, startTime, endTime) values(5,4,"+"'"+username+"',"+"'"+startingPrice+"',"+"'"+secretPrice+"',"+"'"+minIncrement+"','"+auctionStartTime+"','"+auctionEndTime+"')");
-		//response.sendRedirect("home.jsp");
-		response.sendRedirect("home.jsp");
-
+			PreparedStatement ps2=connection.prepareStatement("INSERT INTO auction(productId, username, initialPrice, secretMinimumBid, incrementPrice, startTime, endTime) VALUES(?,?,?,?,?,?,?)");
+			ps2.setInt(1, generatedProductId);
+			ps2.setString(2, username);
+			ps2.setFloat(3, initialPrice);
+			ps2.setFloat(4,secretMinimumBid);
+			ps2.setFloat(5, incrementPrice);
+			ps2.setString(6, startTime);
+			ps2.setString(7, endTime);
+			int rowsAffected2=ps2.executeUpdate();
+			if(rowsAffected2>0){
+				out.println("Auction Created Successfully!");
+			}
+			else{
+				out.println("Auction could not be created!");
+			}
+			
+		}
+		else{
+			out.println("Product could not be added!");
+		}
+	
 
 	}catch(Exception e){
  		out.println(e.getMessage());
