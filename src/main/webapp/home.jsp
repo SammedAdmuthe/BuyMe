@@ -90,7 +90,7 @@ td{
 				out.println("<td>"+ rs.getString("categoryName")+"</td>");
 				out.println("<td>"+ rs.getString("auctionStatus")+"</td>");
 
-				out.println("<td><a href='product.jsp?productid="+ rs.getInt("productId")+"'> Details </td>");
+				out.println("<td><a href='product.jsp?auctionid="+rs.getString("auctionId")+"&productid="+ rs.getInt("productId")+"'> Details </td>");
 
 				out.println("</tr>");
 			}
