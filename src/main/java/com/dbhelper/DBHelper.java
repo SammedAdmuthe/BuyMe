@@ -18,7 +18,7 @@ public class DBHelper {
 			e.printStackTrace();
 		}
 		try {
-			connection = DriverManager.getConnection(connectionUrl,"root", "root123");
+			connection = DriverManager.getConnection(connectionUrl,"root", "password");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

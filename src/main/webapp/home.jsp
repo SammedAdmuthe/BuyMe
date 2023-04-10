@@ -113,16 +113,12 @@ td{
 </div>
 
 <div id="myListings" class="tabcontent">
-  <h1>Hi</h1>
-</div>
-
-<div id="forSale" class="tabcontent">
   <%
 		DBHelper db = new DBHelper();	
 		Connection connection = db.getConnection();
 		try{
 			Statement stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName");
+			ResultSet rs = stmt.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName where p.username='"+session.getAttribute("username")+"';");
 			out.println("<div style='width: 100%;'>");
 			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Initial Price</th><th>Product Image</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
 			while(rs.next()){
@@ -136,7 +132,37 @@ td{
 				out.println("</tr>");
 			}
 			out.println("</table>");
-			out.println("<div>");
+			out.println("</div>");
+
+		}
+		catch (Exception e) {
+	 		out.println(e.getMessage());
+
+		}
+		%> 
+</div>
+
+<div id="forSale" class="tabcontent">
+  <%
+		DBHelper db1 = new DBHelper();	
+		Connection connection1 = db.getConnection();
+		try{
+			Statement stmt1 = connection1.createStatement();
+			ResultSet rs1 = stmt1.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName");
+			out.println("<div style='width: 100%;'>");
+			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Initial Price</th><th>Product Image</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
+			while(rs1.next()){
+				out.println("<tr><td>"+ rs1.getString("initialPrice")+"</td>");
+				out.println("<td>"+ rs1.getString("productImages")+"</td>");
+				out.println("<td>"+ rs1.getString("categoryName")+"</td>");
+				out.println("<td>"+ rs1.getString("auctionStatus")+"</td>");
+
+				out.println("<td><a href='product.jsp?auctionid="+rs1.getString("auctionId")+"&productid="+ rs1.getInt("productId")+"'> Details </td>");
+
+				out.println("</tr>");
+			}
+			out.println("</table>");
+			out.println("</div>");
 
 		}
 		catch (Exception e) {

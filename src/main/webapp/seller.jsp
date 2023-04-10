@@ -12,6 +12,7 @@
 </head>
 <body>
 	<div style="height: 35px; background-color: #ededed; text-align: center; padding-top: 10px;">
+		<a href="home.jsp" style="float:'left';display: inline-block; width: 30px; height: 30px; margin-right: 10px; text-align: center; line-height: 30px; background-color: #ccc; color: #fff; text-decoration: none;"><span style="font-size: 1.5em;">&#8962;</span></a>
 		<label style="font-weight: 600; color: #0099ff; font-size: 18px">Earn money!</label>
 		<label style="font-weight: 600; color: #00cc99; font-size: 18px">Sell your product by filling the form below.. </label>
 	</div><br><br>
