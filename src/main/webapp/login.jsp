@@ -3,6 +3,9 @@
 <%@ page language="java" import="passwordEncrypter.*" %>
 <%@ page import="java.io.*,java.util.*,java.sql.*"%>
 <%@ page import="javax.servlet.*" %>
+<%@ page language="java" import="emailNotification.emailNotification" %>
+
+
 <%
 /* 	DBHelper dbhelper = new DBHelper();
  */
@@ -30,7 +33,18 @@
 			//String sessionUser = (String)session.getAttribute("username");
 			//out.println("Login Success, hello " + sessionUser);
 			session.setAttribute("errorMessage", null);
+			String toEmail = "tanyasharma2614@gmail.com";
+			String subject = "Test Email";
+			String message = "This is a test email from my web application.";
+
+			emailNotification emailNotification = new emailNotification();
+
+			// send the email
+			emailNotification.sendEmail(toEmail, subject, message);
+
+			// redirect to another page after sending the email
 			response.sendRedirect("home.jsp");
+ 			response.sendRedirect("home.jsp");
 		}
 		else
 		{
