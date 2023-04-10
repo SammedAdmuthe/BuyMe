@@ -68,6 +68,7 @@ td{
   padding: 6px 12px;
   border: 1px solid #ccc;
   border-top: none;
+  height: calc(100vh - 250px);
 }
 
 </style>
@@ -106,22 +107,23 @@ td{
 		</div>		
 	</div>
 	
-	<!-- <input style="width: 94%; margin-left: 10px" type="text" id="myInput" placeholder="Search for names.." title="Type in a name"> -->
-
-	
-<div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'London')">For Sale</button>
-  <button class="tablinks" onclick="openCity(event, 'Paris')">My Listings</button>
+	<div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'myListings')">My Listings</button>
+  <button class="tablinks" onclick="openCity(event, 'forSale')">For Sale</button>
 </div>
 
-<div id="London" class="tabcontent">
+<div id="myListings" class="tabcontent">
+  <h1>Hi</h1>
+</div>
+
+<div id="forSale" class="tabcontent">
   <%
-		DBHelper db = new DBHelper();	
-		Connection connection = db.getConnection();
+		DBHelper db1 = new DBHelper();	
+		Connection connection1 = db1.getConnection();
 		try{
-			Statement stmt = connection.createStatement();
+			Statement stmt = connection1.createStatement();
 			ResultSet rs = stmt.executeQuery("Select * from product p join auction a on p.productId = a.auctionId join category c on c.categoryId = p.categoryId");
-			out.println("<div style='width: 100%; height: calc(100vh - 250px);'>");
+			out.println("<div style='width: 100%;'>");
 			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Initial Price</th><th>Product Image</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
 			while(rs.next()){
 				out.println("<tr><td>"+ rs.getString("initialPrice")+"</td>");
@@ -141,17 +143,12 @@ td{
 	 		out.println(e.getMessage());
 
 		}
-		%>
+		%> 
 </div>
-
-<div id="Paris" class="tabcontent">
-  <h3>My Listings</h3>
-  <p>Paris is the capital of France.</p> 
-</div>
-
 	
 		
 </body>
+
 <script>
 function openCity(evt, cityName) {
   var i, tabcontent, tablinks;
@@ -165,6 +162,7 @@ function openCity(evt, cityName) {
   }
   document.getElementById(cityName).style.display = "block";
   evt.currentTarget.className += " active";
+  
 }
 </script>
 </html>
