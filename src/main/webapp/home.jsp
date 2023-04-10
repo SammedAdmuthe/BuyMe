@@ -121,10 +121,11 @@ td{
 			Statement stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName where p.username='"+session.getAttribute("username")+"';");
 			out.println("<div style='width: 100%;'>");
-			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Initial Price</th><th>Product Image</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
+			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
 			while(rs.next()){
-				out.println("<tr><td>"+ rs.getString("initialPrice")+"</td>");
+				out.println("<tr><td>"+ rs.getString("productName")+"</td>");
 				out.println("<td>"+ rs.getString("productImages")+"</td>");
+				out.println("<td>"+ rs.getString("initialPrice")+"</td>");
 				out.println("<td>"+ rs.getString("categoryName")+"</td>");
 				out.println("<td>"+ rs.getString("auctionStatus")+"</td>");
 
@@ -140,7 +141,7 @@ td{
 	 		out.println(e.getMessage());
 
 		}
-		%> 
+		%>
 </div>
 
 <div id="forSale" class="tabcontent">
@@ -151,10 +152,11 @@ td{
 			Statement stmt1 = connection1.createStatement();
 			ResultSet rs1 = stmt1.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName");
 			out.println("<div style='width: 100%;'>");
-			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Initial Price</th><th>Product Image</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
+			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
 			while(rs1.next()){
-				out.println("<tr><td>"+ rs1.getString("initialPrice")+"</td>");
+				out.println("<tr><td>"+ rs1.getString("productName")+"</td>");
 				out.println("<td>"+ rs1.getString("productImages")+"</td>");
+				out.println("<td>"+ rs1.getString("initialPrice")+"</td>");
 				out.println("<td>"+ rs1.getString("categoryName")+"</td>");
 				out.println("<td>"+ rs1.getString("auctionStatus")+"</td>");
 
