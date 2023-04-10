@@ -24,6 +24,8 @@
 		
 		rs.last();
 		int no_records = rs.getRow();
+		rs.first();
+		
 		rs =stmt.executeQuery("select currentMaxBid from auction where auctionId = '"+auctionId+"'");
 		rs.next();
 		
