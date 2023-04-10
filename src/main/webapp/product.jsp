@@ -41,9 +41,8 @@
 		  
 		  <input type="text" id="auctionId" name="auctionId" hidden value = "<%=auctionId%>">
 		  <input type="text" id="username" name="username" hidden value = "<%=session.getAttribute("username")%>">
-		  <input type="text" id="bidId" name="bidId" hidden value = "1">
 		 
-		  <input type="submit" value = "Bid Greater than current Bid">
+		  <input type="submit" value = "Set New Bid  for $<%=currentMaxBid + increment%>">
 		 
 	</form>
 </body>

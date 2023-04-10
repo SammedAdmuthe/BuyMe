@@ -118,11 +118,11 @@ td{
 
 <div id="forSale" class="tabcontent">
   <%
-		DBHelper db1 = new DBHelper();	
-		Connection connection1 = db1.getConnection();
+		DBHelper db = new DBHelper();	
+		Connection connection = db.getConnection();
 		try{
-			Statement stmt = connection1.createStatement();
-			ResultSet rs = stmt.executeQuery("Select * from product p join auction a on p.productId = a.auctionId join category c on c.categoryId = p.categoryId");
+			Statement stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName");
 			out.println("<div style='width: 100%;'>");
 			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Initial Price</th><th>Product Image</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
 			while(rs.next()){
