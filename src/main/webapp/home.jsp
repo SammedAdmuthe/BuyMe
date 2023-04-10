@@ -68,6 +68,7 @@ td{
   padding: 6px 12px;
   border: 1px solid #ccc;
   border-top: none;
+  height: calc(100vh - 250px);
 }
 
 </style>
@@ -106,26 +107,25 @@ td{
 		</div>		
 	</div>
 	
-	<!-- <input style="width: 94%; margin-left: 10px" type="text" id="myInput" placeholder="Search for names.." title="Type in a name"> -->
-
-	
-<div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'London')">For Sale</button>
-  <button class="tablinks" onclick="openCity(event, 'Paris')">My Listings</button>
+	<div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'myListings')">My Listings</button>
+  <button class="tablinks" onclick="openCity(event, 'forSale')">For Sale</button>
+  <button class="tablinks" onclick="openCity(event, 'myBids')">My Bids</button>
 </div>
 
-<div id="London" class="tabcontent">
+<div id="myListings" class="tabcontent">
   <%
 		DBHelper db = new DBHelper();	
 		Connection connection = db.getConnection();
 		try{
 			Statement stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName");
-			out.println("<div style='width: 100%; height: calc(100vh - 250px);'>");
-			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Initial Price</th><th>Product Image</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
+			ResultSet rs = stmt.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName where p.username='"+session.getAttribute("username")+"';");
+			out.println("<div style='width: 100%;'>");
+			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
 			while(rs.next()){
-				out.println("<tr><td>"+ rs.getString("initialPrice")+"</td>");
+				out.println("<tr><td>"+ rs.getString("productName")+"</td>");
 				out.println("<td>"+ rs.getString("productImages")+"</td>");
+				out.println("<td>"+ rs.getString("initialPrice")+"</td>");
 				out.println("<td>"+ rs.getString("categoryName")+"</td>");
 				out.println("<td>"+ rs.getString("auctionStatus")+"</td>");
 
@@ -134,7 +134,7 @@ td{
 				out.println("</tr>");
 			}
 			out.println("</table>");
-			out.println("<div>");
+			out.println("</div>");
 
 		}
 		catch (Exception e) {
@@ -144,14 +144,73 @@ td{
 		%>
 </div>
 
-<div id="Paris" class="tabcontent">
-  <h3>My Listings</h3>
-  <p>Paris is the capital of France.</p> 
+<div id="forSale" class="tabcontent">
+  <%
+		DBHelper db1 = new DBHelper();	
+		Connection connection1 = db1.getConnection();
+		try{
+			Statement stmt1 = connection1.createStatement();
+			ResultSet rs1 = stmt1.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName");
+			out.println("<div style='width: 100%;'>");
+			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
+			while(rs1.next()){
+				out.println("<tr><td>"+ rs1.getString("productName")+"</td>");
+				out.println("<td>"+ rs1.getString("productImages")+"</td>");
+				out.println("<td>"+ rs1.getString("initialPrice")+"</td>");
+				out.println("<td>"+ rs1.getString("categoryName")+"</td>");
+				out.println("<td>"+ rs1.getString("auctionStatus")+"</td>");
+
+				out.println("<td><a href='product.jsp?auctionid="+rs1.getString("auctionId")+"&productid="+ rs1.getInt("productId")+"'> Details </td>");
+
+				out.println("</tr>");
+			}
+			out.println("</table>");
+			out.println("</div>");
+
+		}
+		catch (Exception e) {
+	 		out.println(e.getMessage());
+
+		}
+		%> 
 </div>
 
+<div id="myBids" class="tabcontent">
+
+  <%
+		DBHelper db2 = new DBHelper();	
+		Connection connection2 = db2.getConnection();
+		try{
+			Statement stmt2 = connection2.createStatement();
+			ResultSet rs2 = stmt2.executeQuery("SELECT p.productId, a.auctionId, p.productImages, p.productName, a.auctionStatus, a.currentMaxBid, b.upperLimit, b.bidPrice FROM bidding b JOIN auction a ON b.auctionId = a.auctionId JOIN product p ON a.productId = p.productId WHERE a.endTime > NOW() AND b.username='"+session.getAttribute("username")+"';");
+			out.println("<div style='width: 100%;'>");
+			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Auction Status</th><th>Current Max Bid</th><th>Your Bid</th></th><th>Your Upper Limit</th></tr>");
+			while(rs2.next()){
+				out.println("<tr><td>"+ rs2.getString("productName")+"</td>");
+				out.println("<td>"+ rs2.getString("productImages")+"</td>");
+				out.println("<td>"+ rs2.getString("auctionStatus")+"</td>");
+				out.println("<td>"+ rs2.getString("currentMaxBid")+"</td>");
+				out.println("<td>"+ rs2.getString("bidPrice")+"</td>");
+				out.println("<td>"+ rs2.getString("upperLimit")+"</td>");
+
+				out.println("<td><a href='product.jsp?auctionid="+rs2.getString("auctionId")+"&productid="+ rs2.getInt("productId")+"'> Details </td>");
+
+				out.println("</tr>");
+			}
+			out.println("</table>");
+			out.println("</div>");
+
+		}
+		catch (Exception e) {
+	 		out.println(e.getMessage());
+
+		}
+		%> 
+</div>
 	
 		
 </body>
+
 <script>
 function openCity(evt, cityName) {
   var i, tabcontent, tablinks;
@@ -165,6 +224,7 @@ function openCity(evt, cityName) {
   }
   document.getElementById(cityName).style.display = "block";
   evt.currentTarget.className += " active";
+  
 }
 </script>
 </html>
