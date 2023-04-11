@@ -3,6 +3,19 @@
 <%@ page language="java" import="passwordEncrypter.*" %>
 <%@ page import="java.io.*,java.util.*,java.sql.*"%>
 <%@ page import="javax.servlet.*" %>
+<%@ page import="javax.mail.*" %>
+<%@ page import="javax.mail.Authenticator" %>
+<%@ page import="javax.mail.Message" %>
+<%@ page import="javax.mail.MessagingException" %>
+<%@ page import="javax.mail.PasswordAuthentication" %>
+<%@ page import="javax.mail.Session" %>
+<%@ page import="javax.mail.Transport" %>
+<%@ page import="javax.mail.internet.AddressException" %>
+<%@ page import="javax.mail.internet.InternetAddress" %>
+<%@ page import="javax.mail.internet.MimeMessage" %>
+<%@ page import="java.util.Properties" %>
+<%@page import="EmailNotification.EmailNotification"%>
+
 <%
 /* 	DBHelper dbhelper = new DBHelper();
  */
@@ -30,8 +43,12 @@
 			//String sessionUser = (String)session.getAttribute("username");
 			//out.println("Login Success, hello " + sessionUser);
 			session.setAttribute("errorMessage", null);
-			response.sendRedirect("home.jsp");
-		}
+			
+			
+			EmailNotification.sendEmail("tanyasharma2614@gmail.com","hi","hello");
+			
+ 			response.sendRedirect("home.jsp");
+ 		}
 		else
 		{
 			session.setAttribute("errorMessage", "Invalid username or password");
