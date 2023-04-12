@@ -3,6 +3,7 @@
 <%@ page language="java" import="passwordEncrypter.*" %>
 <%@ page import="java.io.*,java.util.*,java.sql.*"%>
 <%@ page import="javax.servlet.*" %>
+<%@ page import="com.BidSystem" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,6 +48,8 @@
 		stmt.executeUpdate("update auction set currentMaxBid = '"+mybid+"' where auctionId = '" + auctionId +"'");
 /* 		response.sendRedirect("home.jsp");
  */
+ 	BidSystem bs=new BidSystem();
+ 	bs.AutoBid();
 	}catch(Exception e){
  		out.println(e.getMessage());
  	}
