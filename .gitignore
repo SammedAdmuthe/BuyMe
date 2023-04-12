@@ -1,0 +1,7 @@
+/com
+/build
+
+.DS_Store
+src/main/webapp/.DS_Store
+
+*.classpath

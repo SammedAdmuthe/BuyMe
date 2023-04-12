@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,11 +31,17 @@
 	    <p>
 	     <label style="font-weight: 600" class="required">Password: </label><br>
 	     <input type="password" id="pwd" name = "pwd" required
-	       placeholder="Plase enter password" style="width: 98%"/>
+	       placeholder="Please enter password" style="width: 98%"/>
 	    </p>
 	    <div style="text-align: center;">
 	    	<input type="submit" id="registerSubmit" value="Sign In" />	
 	    </div>
+		<!-- Button that will redirect to signup.jsp -->
+		<div style="text-align: center;">
+			<button>
+				<a href="signup.jsp" style="text-decoration: none;">Sign Up</a>
+			</button>
+		</div>
 	    <% if (session.getAttribute("errorMessage") == null ) { %>
          <p> </p>
       <% } else { %>
