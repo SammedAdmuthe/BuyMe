@@ -7,46 +7,38 @@ import java.sql.ResultSetMetaData;
 
 import com.dbhelper.DBHelper;
 
+import EmailNotification.EmailNotification;
+
 public class BidSystem {
 	public void AutoBid() {
 		int currentMaxBid = 0;
 		DBHelper dao = new DBHelper();
 		Connection connection = dao.getConnection();
-		
+		System.out.print("Within Auto bid");
 		try {
 			PreparedStatement ps1=connection.prepareStatement("select max(upperLimit) as maxUpperLimit from bidding");
-//			ps1.setString(1,productName);
-//			ps1.setString(2,username);
-//			ps1.setString(3, category);
 			
-			ResultSet rs = ps1.executeQuery();
-			rs.next();
-			float maxUpperLimit = rs.getFloat("maxUpperLimit");
+			ResultSet rs1 = ps1.executeQuery();
+			rs1.next();
+			float maxUpperLimit = rs1.getFloat("maxUpperLimit");
 			System.out.println(maxUpperLimit);
 			
 			
-			ps1 = connection.prepareStatement("select username from bidding where upperLimit <= ?");
-			
-			ps1.setFloat(1, maxUpperLimit);
-			
-			rs = ps1.executeQuery();
-			
-			rs.last();
-			int countRows = rs.getRow();
-			rs.first();
-			
-			if(countRows>1) {
-				//Send Email Notifications to all users from rs
-			}
-			
-			
-			printResultSet(rs);
+			PreparedStatement ps2 = connection.prepareStatement("SELECT e.emailId FROM bidding b JOIN enduser e ON b.username = e.username WHERE b.upperLimit <= ?");
+			ps2.setFloat(1, maxUpperLimit);
+			ResultSet rs2 = ps2.executeQuery();
 
+			System.out.print("inside bidding");
+				System.out.print("we have result set");
+				while(rs2.next()) {
+				     String email = rs2.getString("emailId");
+				     EmailNotification.sendEmail(email, "Bidding Alert","Someone bid higher than you");
+				}
+			
 		}
 		catch(Exception e) {
-			
+			System.out.print(e);
 		}
-
 		
 		
 	}
