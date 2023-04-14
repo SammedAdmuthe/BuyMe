@@ -14,7 +14,7 @@
 <%@ page import="javax.mail.internet.InternetAddress" %>
 <%@ page import="javax.mail.internet.MimeMessage" %>
 <%@ page import="java.util.Properties" %>
-<%@page import="EmailNotification.EmailNotification"%>
+<%@page import="EmailNotification.emailNotification"%>
 
 <%
 /* 	DBHelper dbhelper = new DBHelper();
@@ -45,7 +45,7 @@
 			session.setAttribute("errorMessage", null);
 			
 			
-			EmailNotification.sendEmail("tanyasharma2614@gmail.com","hi","hello");
+			emailNotification.sendEmail("tanyasharma2614@gmail.com","hi","hello");
 			
  			response.sendRedirect("home.jsp");
  		}

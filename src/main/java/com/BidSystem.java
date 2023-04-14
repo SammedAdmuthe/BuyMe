@@ -7,7 +7,7 @@ import java.sql.ResultSetMetaData;
 
 import com.dbhelper.DBHelper;
 
-import EmailNotification.EmailNotification;
+import EmailNotification.emailNotification;
 
 public class BidSystem {
 	public void AutoBid() {
@@ -32,7 +32,7 @@ public class BidSystem {
 				System.out.print("we have result set");
 				while(rs2.next()) {
 				     String email = rs2.getString("emailId");
-				     EmailNotification.sendEmail(email, "Bidding Alert","Someone bid higher than you");
+				     emailNotification.sendEmail(email, "Bidding Alert","Someone bid higher than you");
 				}
 			
 		}

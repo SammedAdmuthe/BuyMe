@@ -40,7 +40,7 @@
             else
             {
                 // username, fname, lname, password, dob, address, phone, email
-                stmt.executeupdate("insert into enduser(username, firstName, lastName, password, dob, address, phoneNo, emailId) values("+ "'"+username+"'" + "," + "'"+fname+"'" + "," + "'"+lname+"'" + "," + "'"+pwd+"'" + "," + "'"+dob+"'" + "," + "'"+address+"'" + "," + "'"+phone+"'" + "," + "'"+email+"'" + ")");
+                stmt.executeUpdate("insert into enduser(username, firstName, lastName, password, dob, address, phoneNo, emailId) values("+ "'"+username+"'" + "," + "'"+fname+"'" + "," + "'"+lname+"'" + "," + "'"+pwd+"'" + "," + "'"+dob+"'" + "," + "'"+address+"'" + "," + "'"+phone+"'" + "," + "'"+email+"'" + ")");
                 session.setAttribute("username",username);
                 response.sendRedirect("home.jsp");
             }

@@ -45,8 +45,8 @@
 		{
 			int rs1 = stmt.executeUpdate("insert into bidding(auctionId, username, bidPrice, upperLimit) values("+"'"+auctionId+"',"+"'"+username+"',"+"'"+mybid+"', '"+upperLimit+"'"+")");
 		}
-		stmt.executeUpdate("update auction set currentMaxBid = '"+mybid+"' where auctionId = '" + auctionId +"'");
-/* 		response.sendRedirect("home.jsp");
+ 		stmt.executeUpdate("update auction set currentMaxBid = '"+mybid+"', maxBidUserName = '"+ username +"' where auctionId = '" + auctionId +"'");
+ /* 		response.sendRedirect("home.jsp");
  */
  	BidSystem bs=new BidSystem();
  	bs.AutoBid();
