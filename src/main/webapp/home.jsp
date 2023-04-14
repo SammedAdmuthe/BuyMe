@@ -5,6 +5,10 @@
 <%@ page language="java" import="passwordEncrypter.*" %>
 <%@ page import="java.io.*,java.util.*,java.sql.*"%>
 <%@ page import="javax.servlet.*" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.time.*" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -123,12 +127,41 @@ td{
 			out.println("<div style='width: 100%;'>");
 			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
 			while(rs.next()){
+			    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+			    
+			    LocalDateTime nowDateTime = LocalDateTime.now();
+/* 			    dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+ */			    
+/*  				LocalDateTime nowDate = LocalDateTime.now(); */
+ /* 				   System.out.println("GETer" + dtf.format(now));  
+ */				/* 
+ 				System.out.println(rs.getTime("startTime"));
+ 				System.out.println(rs.getDate("startTime"));
+ 				System.out.println(); */
+/*  				System.out.println(nowTime.toLocalTime());
+ */ 				
+ 				LocalDate currentDate = nowDateTime.toLocalDate();
+ 				LocalTime currentTime = nowDateTime.toLocalTime();
+ 				
+			    LocalDateTime scheduleDateTime = rs.getTimestamp("startTime").toLocalDateTime();
+			    
+			    LocalDate scheduleDate = scheduleDateTime.toLocalDate();
+ 				LocalTime scheduleTime = scheduleDateTime.toLocalTime();
+ 				
+/*  				System.out.println(scheduleDate.compareTo(currentDate));
+ 				System.out.println(currentTime.compareTo(scheduleTime));
+ 				 */
+
+/* 			    SimpleDateFormat formatter6=new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");  
+
+				String scheduleStart = rs.getString("startTime");
+				System.out.println("HERE !! "+ formatter6); */
 				out.println("<tr><td>"+ rs.getString("productName")+"</td>");
 				out.println("<td>"+ rs.getString("productImages")+"</td>");
 				out.println("<td>"+ rs.getString("initialPrice")+"</td>");
 				out.println("<td>"+ rs.getString("categoryName")+"</td>");
 				out.println("<td>"+ rs.getString("auctionStatus")+"</td>");
-
+				
 				out.println("<td><a href='product.jsp?auctionid="+rs.getString("auctionId")+"&productid="+ rs.getInt("productId")+"'> Details </td>");
 
 				out.println("</tr>");
@@ -153,14 +186,29 @@ td{
 			ResultSet rs1 = stmt1.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName");
 			out.println("<div style='width: 100%;'>");
 			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
+			
 			while(rs1.next()){
+			    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+			    
+			    LocalDateTime nowDateTime = LocalDateTime.now();				
+ 				LocalDate currentDate = nowDateTime.toLocalDate();
+ 				LocalTime currentTime = nowDateTime.toLocalTime();
+ 				
+			    LocalDateTime scheduleDateTime = rs1.getTimestamp("startTime").toLocalDateTime();
+			    
+			    LocalDate scheduleDate = scheduleDateTime.toLocalDate();
+ 				LocalTime scheduleTime = scheduleDateTime.toLocalTime();
+ 				
 				out.println("<tr><td>"+ rs1.getString("productName")+"</td>");
 				out.println("<td>"+ rs1.getString("productImages")+"</td>");
 				out.println("<td>"+ rs1.getString("initialPrice")+"</td>");
 				out.println("<td>"+ rs1.getString("categoryName")+"</td>");
 				out.println("<td>"+ rs1.getString("auctionStatus")+"</td>");
-
-				out.println("<td><a href='product.jsp?auctionid="+rs1.getString("auctionId")+"&productid="+ rs1.getInt("productId")+"'> Details </td>");
+				
+				if(scheduleDate.compareTo(currentDate)!=1 && scheduleTime.compareTo(currentTime)!=1)
+					out.println("<td><a href='product.jsp?auctionid="+rs1.getString("auctionId")+"&productid="+ rs1.getInt("productId")+"'> Details </td>");
+				else
+					out.println("<td>Will be live soon</td>");
 
 				out.println("</tr>");
 			}
