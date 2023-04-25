@@ -118,8 +118,14 @@ td{
 </div>
 
 <div id="myListings" class="tabcontent">
-  <input type="text" id="myInput1" onkeyup="filterTable('myListingsTable', 'myInput1')" placeholder="Search for product name..." style="width:100%; margin-bottom:10px;">
-
+  <input type="text" id="myInput1" onkeyup="filterTable('myListingsTable', this.value, document.getElementById('mySelect1').value)" placeholder="Search...">
+    <select id="mySelect1" onchange="filterTable('myListingsTable', document.getElementById('myInput1').value, this.value)">
+      <option value="0">All Columns</option>
+      <option value="1">Product Name</option>
+      <option value="3">Initial Price</option>
+      <option value="4">Product Category</option>
+      <option value="5">Auction Status</option>
+    </select>
   <%
 		DBHelper db = new DBHelper();	
 		Connection connection = db.getConnection();
@@ -180,8 +186,14 @@ td{
 </div>
 
 <div id="forSale" class="tabcontent">
-  <input type="text" id="myInput2" onkeyup="filterTable('forSaleTable', 'myInput2')" placeholder="Search for product name..." style="width:100%; margin-bottom:10px;">
-
+  <input type="text" id="myInput2" onkeyup="filterTable('forSaleTable', this.value, document.getElementById('mySelect2').value)" placeholder="Search...">
+    <select id="mySelect2" onchange="filterTable('forSaleTable', document.getElementById('myInput2').value, this.value)">
+      <option value="0">All Columns</option>
+      <option value="1">Product Name</option>
+      <option value="3">Initial Price</option>
+      <option value="4">Product Category</option>
+      <option value="5">Auction Status</option>
+    </select>
   <%
 		DBHelper db1 = new DBHelper();	
 		Connection connection1 = db1.getConnection();
@@ -249,8 +261,15 @@ td{
 </div>
 
 <div id="myBids" class="tabcontent">
-  <input type="text" id="myInput3" onkeyup="filterTable('myBidsTable', 'myInput3')" placeholder="Search for product name..." style="width:100%; margin-bottom:10px;">
-
+  <input type="text" id="myInput3" onkeyup="filterTable('myBidsTable', this.value, document.getElementById('mySelect3').value)" placeholder="Search...">
+    <select id="mySelect3" onchange="filterTable('myBidsTable', document.getElementById('myInput3').value, this.value)">
+      <option value="0">All Columns</option>
+      <option value="1">Product Name</option>
+      <option value="3">Auction Status</option>
+      <option value="4">Current Max Bid</option>
+      <option value="5">Your Bid</option>
+      <option value="6">Your Upper Limit</option>
+    </select>
 
   <%
 		DBHelper db2 = new DBHelper();	
@@ -284,24 +303,32 @@ td{
 </div>
 
 <script>
-function filterTable(tableId, inputId) {
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById(inputId);
-  filter = input.value.toUpperCase();
-  table = document.getElementById(tableId);
-  tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-  }
-}
+function filterTable(tableId, searchText, columnNum) {
+	  var table = document.getElementById(tableId);
+	  var rows = table.getElementsByTagName("tr");
+	  for (var i = 1; i < rows.length; i++) {
+	    var cells = rows[i].getElementsByTagName("td");
+	    var found = false;
+	    if (columnNum == 0) {
+	      for (var j = 0; j < cells.length; j++) {
+	        if (cells[j].innerHTML.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+	          found = true;
+	          break;
+	        }
+	      }
+	    } else {
+	      if (cells[columnNum-1].innerHTML.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+	        found = true;
+	      }
+	    }
+	    if (found) {
+	      rows[i].style.display = "";
+	    } else {
+	      rows[i].style.display = "none";
+	    }
+	  }
+	}
+
 </script>
 	
 		
