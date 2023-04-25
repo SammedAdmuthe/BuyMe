@@ -10,7 +10,7 @@ import com.dbhelper.DBHelper;
 import EmailNotification.emailNotification;
 
 public class BidSystem {
-	public void AutoBid() {
+	public void AutoBid(String username, String auctionID) {
 		int currentMaxBid = 0;
 		DBHelper dao = new DBHelper();
 		Connection connection = dao.getConnection();
@@ -24,15 +24,18 @@ public class BidSystem {
 			System.out.println(maxUpperLimit);
 			
 			
-			PreparedStatement ps2 = connection.prepareStatement("SELECT e.emailId FROM bidding b JOIN enduser e ON b.username = e.username WHERE b.upperLimit <= ?");
-			ps2.setFloat(1, maxUpperLimit);
+			PreparedStatement ps2 = connection.prepareStatement("SELECT e.username, e.emailId FROM bidding b JOIN enduser e ON b.username = e.username WHERE b.auctionId = ? and b.upperLimit <= ?");
+			ps2.setString(1, auctionID);
+			ps2.setFloat(2, maxUpperLimit);
 			ResultSet rs2 = ps2.executeQuery();
 
 			System.out.print("inside bidding");
 				System.out.print("we have result set");
 				while(rs2.next()) {
-				     String email = rs2.getString("emailId");
-				     emailNotification.sendEmail(email, "Bidding Alert","Someone bid higher than you");
+					if(!rs2.getString("username").equals(username)) {
+						String email = rs2.getString("emailId");
+					    emailNotification.sendEmail(email, "Bidding Alert","Someone bid higher than you");
+					} 
 				}
 			
 		}
@@ -68,6 +71,6 @@ public class BidSystem {
 	
 	public static void main(String[] args) {
 		BidSystem bs = new BidSystem();
-		bs.AutoBid();
+		bs.AutoBid("sammed", "12");
 	}
 }

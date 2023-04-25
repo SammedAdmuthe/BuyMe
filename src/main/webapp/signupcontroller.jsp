@@ -1,6 +1,8 @@
 <%@ page language="java" import = "com.dbhelper.*" %>
 <%@ page import="java.io.*,java.util.*,java.sql.*"%>
 <%@ page import="javax.servlet.*" %>
+<%@ page language="java" import="passwordEncrypter.*" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,7 +42,7 @@
             else
             {
                 // username, fname, lname, password, dob, address, phone, email
-                stmt.executeUpdate("insert into enduser(username, firstName, lastName, password, dob, address, phoneNo, emailId) values("+ "'"+username+"'" + "," + "'"+fname+"'" + "," + "'"+lname+"'" + "," + "'"+pwd+"'" + "," + "'"+dob+"'" + "," + "'"+address+"'" + "," + "'"+phone+"'" + "," + "'"+email+"'" + ")");
+                stmt.executeUpdate("insert into enduser(username, firstName, lastName, password, dob, address, phoneNo, emailId) values("+ "'"+username+"'" + "," + "'"+fname+"'" + "," + "'"+lname+"'" + "," + "'"+passwordEncrypter.encrypt(pwd)+"'" + "," + "'"+dob+"'" + "," + "'"+address+"'" + "," + "'"+phone+"'" + "," + "'"+email+"'" + ")");
                 session.setAttribute("username",username);
                 response.sendRedirect("home.jsp");
             }

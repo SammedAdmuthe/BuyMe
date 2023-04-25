@@ -43,12 +43,23 @@
  	rs1.next();
  	String maxBidUserName = rs1.getString("maxBidUserName");
  	
+
 /*  	out.println(maxBidUserName);
  */
  	int newBid = currentMaxBid;
  	if(newBid == 0) {
  		newBid = initialPrice-increment; // This takes care of increment for the first time bid by any user.
  	}
+ 	
+ 	rs1 = stmt.executeQuery("select max(upperLimit) as maxLimit from bidding where auctionId = " + "'"+auctionId+"'");
+ 	rs1.last();
+ 	int row_count = rs1.getRow();
+ 	rs1.first();
+ 	if(row_count > 0){
+ 		newBid = rs1.getInt("maxLimit");
+ 	}
+ 	
+ 	
 	%>
 	<form action="bidInsert.jsp" method="post">
 		  <label for="currentbid">Current Bid on this product :</label><br>

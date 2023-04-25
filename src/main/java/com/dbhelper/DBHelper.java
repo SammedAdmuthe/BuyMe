@@ -18,7 +18,7 @@ public class DBHelper {
 			e.printStackTrace();
 		}
 		try {
-			connection = DriverManager.getConnection(connectionUrl,"root", "password");
+			connection = DriverManager.getConnection(connectionUrl,"root", "root123");
 			if(connection != null){
 				System.out.println("Connection Successful!");
 			}else{

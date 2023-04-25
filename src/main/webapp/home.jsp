@@ -195,9 +195,14 @@ td{
  				LocalTime currentTime = nowDateTime.toLocalTime();
  				
 			    LocalDateTime scheduleDateTime = rs1.getTimestamp("startTime").toLocalDateTime();
-			    
 			    LocalDate scheduleDate = scheduleDateTime.toLocalDate();
  				LocalTime scheduleTime = scheduleDateTime.toLocalTime();
+ 				
+			    LocalDateTime scheduleEndDateTime = rs1.getTimestamp("endTime").toLocalDateTime();
+ 				LocalDate scheduleEndDate = scheduleEndDateTime.toLocalDate();
+ 				LocalTime scheduleEndTime = scheduleEndDateTime.toLocalTime();
+ 				System.out.println(scheduleEndDate.compareTo(currentDate));
+ 				System.out.println(scheduleEndTime.compareTo(currentTime));
  				
 				out.println("<tr><td>"+ rs1.getString("productName")+"</td>");
 				out.println("<td>"+ rs1.getString("productImages")+"</td>");
@@ -205,11 +210,27 @@ td{
 				out.println("<td>"+ rs1.getString("categoryName")+"</td>");
 				out.println("<td>"+ rs1.getString("auctionStatus")+"</td>");
 				
-				if(scheduleDate.compareTo(currentDate)!=1 && scheduleTime.compareTo(currentTime)!=1)
+				if((scheduleDate.compareTo(currentDate)<=0 && scheduleEndDate.compareTo(currentDate)>=0) && (scheduleTime.compareTo(currentTime)<=0 && scheduleEndTime.compareTo(currentTime)==1))  //auction start
 					out.println("<td><a href='product.jsp?auctionid="+rs1.getString("auctionId")+"&productid="+ rs1.getInt("productId")+"'> Details </td>");
-				else
+				else if((scheduleEndDate.compareTo(currentDate) < 0) || (scheduleEndDate.compareTo(currentDate)<=0 && scheduleEndTime.compareTo(currentTime)<=0)) // auction stopped
+				{
+					int currentMax = rs1.getInt("currentMaxBid");
+					float secretMinBid = rs1.getFloat("secretMinimumBid");
+					
+					if(secretMinBid <= currentMax)
+					{
+						//Bid won by maxBidUserName
+						out.println("<td><a href='product.jsp?auctionid="+rs1.getString("auctionId")+"&productid="+ rs1.getInt("productId")+"'> Bid won by "+rs1.getString("maxBidUserName")+" </td>");
+					}
+					else
+					{
+						out.println("<td> No winner </td>");
+					}
+				}
+				else {
 					out.println("<td>Will be live soon</td>");
 
+				}
 				out.println("</tr>");
 			}
 			out.println("</table>");

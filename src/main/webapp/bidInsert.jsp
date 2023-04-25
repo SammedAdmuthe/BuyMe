@@ -45,11 +45,21 @@
 		{
 			int rs1 = stmt.executeUpdate("insert into bidding(auctionId, username, bidPrice, upperLimit) values("+"'"+auctionId+"',"+"'"+username+"',"+"'"+mybid+"', '"+upperLimit+"'"+")");
 		}
- 		stmt.executeUpdate("update auction set currentMaxBid = '"+mybid+"', maxBidUserName = '"+ username +"' where auctionId = '" + auctionId +"'");
+ 
+ 		//auto bidding logic for current max -----
+ 		/* rs =stmt.executeQuery("select * from bidding where auctionId = '"+auctionId+"' where upperLimit '" + upperLimit +"'");
+ 		rs.last();
+ 		no_records = rs.getRow();
+ 		rs.first();
+		if(no_records > 0){
+			
+		}
+		else */
+ 			stmt.executeUpdate("update auction set currentMaxBid = '"+mybid+"', maxBidUserName = '"+ username +"' where auctionId = '" + auctionId +"'");
  /* 		response.sendRedirect("home.jsp");
  */
  	BidSystem bs=new BidSystem();
- 	bs.AutoBid();
+ 	bs.AutoBid(username, auctionId);
 	}catch(Exception e){
  		out.println(e.getMessage());
  	}

@@ -45,8 +45,8 @@
 			session.setAttribute("errorMessage", null);
 			
 			
-			emailNotification.sendEmail("tanyasharma2614@gmail.com","hi","hello");
-			
+/* 			emailNotification.sendEmail("tanyasharma2614@gmail.com","hi","hello");
+ */			
  			response.sendRedirect("home.jsp");
  		}
 		else
