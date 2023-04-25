@@ -118,6 +118,8 @@ td{
 </div>
 
 <div id="myListings" class="tabcontent">
+  <input type="text" id="myInput1" onkeyup="filterTable('myListingsTable', 'myInput1')" placeholder="Search for product name..." style="width:100%; margin-bottom:10px;">
+
   <%
 		DBHelper db = new DBHelper();	
 		Connection connection = db.getConnection();
@@ -125,7 +127,7 @@ td{
 			Statement stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName where p.username='"+session.getAttribute("username")+"';");
 			out.println("<div style='width: 100%;'>");
-			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
+			out.println("<table id='myListingsTable'  style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
 			while(rs.next()){
 			    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 			    
@@ -178,6 +180,8 @@ td{
 </div>
 
 <div id="forSale" class="tabcontent">
+  <input type="text" id="myInput2" onkeyup="filterTable('forSaleTable', 'myInput2')" placeholder="Search for product name..." style="width:100%; margin-bottom:10px;">
+
   <%
 		DBHelper db1 = new DBHelper();	
 		Connection connection1 = db1.getConnection();
@@ -185,7 +189,7 @@ td{
 			Statement stmt1 = connection1.createStatement();
 			ResultSet rs1 = stmt1.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName");
 			out.println("<div style='width: 100%;'>");
-			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
+			out.println("<table id='forSaleTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
 			
 			while(rs1.next()){
 			    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -245,6 +249,8 @@ td{
 </div>
 
 <div id="myBids" class="tabcontent">
+  <input type="text" id="myInput3" onkeyup="filterTable('myBidsTable', 'myInput3')" placeholder="Search for product name..." style="width:100%; margin-bottom:10px;">
+
 
   <%
 		DBHelper db2 = new DBHelper();	
@@ -253,7 +259,7 @@ td{
 			Statement stmt2 = connection2.createStatement();
 			ResultSet rs2 = stmt2.executeQuery("SELECT p.productId, a.auctionId, p.productImages, p.productName, a.auctionStatus, a.currentMaxBid, b.upperLimit, b.bidPrice FROM bidding b JOIN auction a ON b.auctionId = a.auctionId JOIN product p ON a.productId = p.productId WHERE a.endTime > NOW() AND b.username='"+session.getAttribute("username")+"';");
 			out.println("<div style='width: 100%;'>");
-			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Auction Status</th><th>Current Max Bid</th><th>Your Bid</th></th><th>Your Upper Limit</th></tr>");
+			out.println("<table id='myBidsTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Auction Status</th><th>Current Max Bid</th><th>Your Bid</th></th><th>Your Upper Limit</th></tr>");
 			while(rs2.next()){
 				out.println("<tr><td>"+ rs2.getString("productName")+"</td>");
 				out.println("<td>"+ rs2.getString("productImages")+"</td>");
@@ -276,6 +282,27 @@ td{
 		}
 		%> 
 </div>
+
+<script>
+function filterTable(tableId, inputId) {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById(inputId);
+  filter = input.value.toUpperCase();
+  table = document.getElementById(tableId);
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
 	
 		
 </body>
