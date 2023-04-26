@@ -125,7 +125,16 @@ td{
       <option value="3">Initial Price</option>
       <option value="4">Product Category</option>
       <option value="5">Auction Status</option>
+    </select> &nbsp; &nbsp;
+    <label><b>Sort By:</b></label>
+    <select onchange="sortTable('myListingsTable', 'myListingsSortBy')" id="myListingsSortBy">
+    		<option value="0">Choose Option</option>
+	    	<option value="1">Product Name</option>
+	      <option value="3">Initial Price</option>
+	      <option value="4">Product Category</option>
+	      <option value="5">Auction Status</option> 
     </select>
+  
   <%
 		DBHelper db = new DBHelper();	
 		Connection connection = db.getConnection();
@@ -194,6 +203,15 @@ td{
       <option value="4">Product Category</option>
       <option value="5">Auction Status</option>
     </select>
+    &nbsp; &nbsp;
+    <label><b>Sort By:</b></label>
+    <select onchange="sortTable('forSaleTable', 'forSaleSortBy')" id="forSaleSortBy">
+    <option value="0">Choose Option</option>
+	    <option value="1">Product Name</option>
+	      <option value="3">Initial Price</option>
+	      <option value="4">Product Category</option>
+	      <option value="5">Auction Status</option> 
+    </select>
   <%
 		DBHelper db1 = new DBHelper();	
 		Connection connection1 = db1.getConnection();
@@ -201,7 +219,7 @@ td{
 			Statement stmt1 = connection1.createStatement();
 			ResultSet rs1 = stmt1.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName");
 			out.println("<div style='width: 100%;'>");
-			out.println("<table id='forSaleTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
+			out.println("<table id='forSaleTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name </th> <th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
 			
 			while(rs1.next()){
 			    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -270,7 +288,15 @@ td{
       <option value="5">Your Bid</option>
       <option value="6">Your Upper Limit</option>
     </select>
-
+&nbsp; &nbsp;
+    <label><b>Sort By:</b></label>
+    <select onchange="sortTable('myBidsTable', 'myBidsSortBy')" id="myBidsSortBy">
+    <option value="0">Choose Option</option>
+	    <option value="1">Product Name</option>
+	      <option value="3">Initial Price</option>
+	      <option value="4">Product Category</option>
+	      <option value="5">Auction Status</option> 
+    </select>
   <%
 		DBHelper db2 = new DBHelper();	
 		Connection connection2 = db2.getConnection();
@@ -349,5 +375,58 @@ function openCity(evt, cityName) {
   evt.currentTarget.className += " active";
   
 }
+
+function sortTable(tableId, sortById) {
+	  var table, rows, switching, i, x, y, shouldSwitch;
+	  table = document.getElementById(tableId);
+	  switching = true;
+	  var sortByName = document.getElementById(sortById);
+	  
+	  var sortByColumn = 0;
+	  
+	  console.log(sortByName.value)
+	  
+	  switch(sortByName.value){
+	  	case 1:
+	  		sortByColumn = 0;
+	  	case 3:
+	  		sortByColumn = 2;
+	  	case 4:
+	  		sortByColumn = 3;
+	  	case 5:
+	  		sortByColumn = 4;
+		  
+	  }
+	  /*Make a loop that will continue until
+	  no switching has been done:*/
+	  while (switching) {
+	    //start by saying: no switching is done:
+	    switching = false;
+	    rows = table.rows;
+	    /*Loop through all table rows (except the
+	    first, which contains table headers):*/
+	    for (i = 1; i < (rows.length - 1); i++) {
+	      //start by saying there should be no switching:
+	      shouldSwitch = false;
+	      /*Get the two elements you want to compare,
+	      one from current row and one from the next:*/
+	      x = rows[i].getElementsByTagName("TD")[sortByColumn];
+	      y = rows[i + 1].getElementsByTagName("TD")[sortByColumn];
+	      //check if the two rows should switch place:
+	      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+	        //if so, mark as a switch and break the loop:
+	        shouldSwitch = true;
+	        break;
+	      }
+	    }
+	    if (shouldSwitch) {
+	      /*If a switch has been marked, make the switch
+	      and mark that a switch has been done:*/
+	      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+	      switching = true;
+	    }
+	  }
+	}
+
 </script>
 </html>
