@@ -35,7 +35,7 @@ public class BidSystem {
 					if(!rs2.getString("username").equals(username)) {
 						String email = rs2.getString("emailId");
 					    emailNotification.sendEmail(email, "Bidding Alert","Someone bid higher than you");
-					} 
+					}
 				}
 			
 		}

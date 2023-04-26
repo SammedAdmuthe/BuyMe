@@ -43,23 +43,61 @@
  	rs1.next();
  	String maxBidUserName = rs1.getString("maxBidUserName");
  	
+	rs1 = stmt.executeQuery("select * from bidding where username = " + "'"+session.getAttribute("username")+"'");
+	float userMaxLimit = 0;
+	rs1.last();
+	int count = rs1.getRow();
+	rs1.first();
+	
+	if(count > 0) {
+/* 		rs1.next();
+ *//* 		System.out.println(rs1.getFloat("upperLimit"));
+ */		userMaxLimit = rs1.getFloat("upperLimit");
 
+	}
 /*  	out.println(maxBidUserName);
  */
  	int newBid = currentMaxBid;
  	if(newBid == 0) {
  		newBid = initialPrice-increment; // This takes care of increment for the first time bid by any user.
  	}
- 	
- 	rs1 = stmt.executeQuery("select max(upperLimit) as maxLimit from bidding where auctionId = " + "'"+auctionId+"'");
- 	rs1.last();
- 	int row_count = rs1.getRow();
- 	rs1.first();
- 	if(row_count > 0){
- 		newBid = rs1.getInt("maxLimit");
+ 	else {
+	 	rs1 = stmt.executeQuery("select * from bidding where auctionId = " + "'"+auctionId+"'");
+	 	rs1.last();
+	 	int row_count = rs1.getRow();
+	 	rs1.first();
+/* 		int maxLimit = rs1.getInt("maxLimit");
+ */
+	 	
+	 	if(row_count > 1) {
+	 		//update currentMax Bid in database table bid based on upper limits.
+	 		rs1 = stmt.executeQuery("select * from bidding where auctionId = " + "'"+auctionId+"' order by upperLimit desc limit 1 offset 1");
+			rs1.next();
+			
+	 		newBid = (int)rs1.getFloat("upperLimit");
+			if(newBid+increment<=currentMaxBid)	{
+				newBid=currentMaxBid;
+			}
+					
+	 	}
+		
+	/* 	rs1 = stmt.executeQuery("select * from bidding where auctionId = " + "'"+auctionId+"'");
+	 	rs1.last();
+	 	int number_of_bidders = rs1.getRow();
+	 	rs1.first(); */
+	 	
+	 	/* if(row_count > 0){
+	 		int amount = currentMaxBid;
+	 		while(amount<maxLimit) {
+	 			amount+=increment;
+	 		}
+	 		newBid = amount;
+	 	} */
+/* 		newBid = newBid+increment;
+ */		 
+	 	
  	}
- 	
- 	
+
 	%>
 	<form action="bidInsert.jsp" method="post" style="padding: 8px">
 		  <label for="currentbid"><b>Current Bid on this product :</b></label><br>
@@ -71,20 +109,19 @@
 		   <input type="radio" onclick="javascript:bidTypeChange(this.id);" name="manualBid" id="manualBid" value=1/>Manual Bid&nbsp;&nbsp;
 		   <input type="radio" onclick="javascript:bidTypeChange(this.id);" name="autoBid" id="autoBid" value=0/>Auto Bid<br>
 		  
-		  <input type="text" id="mybid" name="mybid" hidden value = "<%=newBid + increment%>">
-		  
+		  <input type="text" id="mybid" name="mybid" hidden value = "<%=newBid + increment%>">		  
 		  <div style="padding-left: 25px; padding-top: 8px;">
 			  <label for="uplimit" id="upLimitLabel" style="display:none">Enter Upper Limit</label>
 			  <input type="text" id="uplimit" name="uplimit" style="display:none"><br>
 			  <label for="bidBuyerSide" id="bidBuyerSideLabel" style="display:none">Bid Increment Buyer Side:</label>
 			  <input type="number" id="bidBuyerSide" name="bidBuyerSide" style="display:none"><br>
 		  </div>
-		  
-		  
+		  <input type="text" id="mybidincrement" name="increment" hidden value = "<%=increment%>">		  
 		  <input type="text" id="auctionId" name="auctionId" hidden value = "<%=auctionId%>">
 		  <input type="text" id="username" name="username" hidden value = "<%=session.getAttribute("username")%>">
-		 
-		  <%if(session.getAttribute("username").equals(maxBidUserName)){ %>
+<!-- 		  || (userMaxLimit >= currentMaxBid)
+ -->		  
+ 		  <%if(session.getAttribute("username").equals(maxBidUserName)){ %>
 		   <input type="submit" disabled value = "Set New Bid for $<%=newBid + increment%>">
 		  <%} else {%>
 		  	<input type="submit" value = "Set New Bid  for $<%=newBid + increment%>">

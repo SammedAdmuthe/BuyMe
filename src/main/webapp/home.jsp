@@ -217,8 +217,8 @@ td{
 			    LocalDateTime scheduleEndDateTime = rs1.getTimestamp("endTime").toLocalDateTime();
  				LocalDate scheduleEndDate = scheduleEndDateTime.toLocalDate();
  				LocalTime scheduleEndTime = scheduleEndDateTime.toLocalTime();
- 				System.out.println(scheduleEndDate.compareTo(currentDate));
- 				System.out.println(scheduleEndTime.compareTo(currentTime));
+/*  				System.out.println(scheduleEndDate.compareTo(currentDate));
+ 				System.out.println(scheduleEndTime.compareTo(currentTime)); */
  				
 				out.println("<tr><td>"+ rs1.getString("productName")+"</td>");
 				out.println("<td>"+ rs1.getString("productImages")+"</td>");

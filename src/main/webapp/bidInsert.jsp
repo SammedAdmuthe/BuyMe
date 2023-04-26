@@ -21,13 +21,14 @@
 		String username = request.getParameter("username");
 		String mybid = request.getParameter("mybid");
 		String upperLimit = request.getParameter("uplimit");
+		int increment = Integer.parseInt(request.getParameter("increment"));
 		ResultSet rs = stmt.executeQuery("select * from bidding where username = " + "'"+username+"' and"+" auctionId = '"+auctionId+"'" );
 		
 		rs.last();
 		int no_records = rs.getRow();
 		rs.first();
 		
-		rs =stmt.executeQuery("select currentMaxBid from auction where auctionId = '"+auctionId+"'");
+		rs = stmt.executeQuery("select currentMaxBid from auction where auctionId = '"+auctionId+"'");
 		rs.next();
 		
 		int currentMaxBid = rs.getInt("currentMaxBid");
@@ -55,11 +56,60 @@
 			
 		}
 		else */
- 			stmt.executeUpdate("update auction set currentMaxBid = '"+mybid+"', maxBidUserName = '"+ username +"' where auctionId = '" + auctionId +"'");
  /* 		response.sendRedirect("home.jsp");
  */
- 	BidSystem bs=new BidSystem();
- 	bs.AutoBid(username, auctionId);
+ 		ResultSet rs1 = stmt.executeQuery("select * from bidding where auctionId = " + "'"+auctionId+"'");
+		rs1.last();
+		int row_count = rs1.getRow();
+		rs1.first();
+	/* 		int maxLimit = rs1.getInt("maxLimit");
+	*/			
+		if(row_count > 1) {
+			//update currentMax Bid in database table bid based on upper limits.
+
+/* 			rs1.next();
+			
+			
+			float newBid = (int)rs1.getFloat("upperLimit");	 */	
+			
+			
+			//second highest;
+			rs1 = stmt.executeQuery("select * from bidding where auctionId = " + "'"+auctionId+"' order by upperLimit desc limit 2 offset 0");
+			rs1.next();
+			int highestAmount = (int)rs1.getFloat("upperLimit");
+			rs1.next();
+			int secondHighestAmount = (int)rs1.getFloat("upperLimit");
+			
+			
+			int bidamt = Integer.parseInt(mybid);
+			System.out.println("Mybid = "+bidamt);
+			System.out.println("currentMaxBid = "+currentMaxBid);
+			System.out.println("secondHighestAmount = "+secondHighestAmount);
+
+			if(secondHighestAmount + increment <= currentMaxBid) {
+		 		stmt.executeUpdate("update auction set currentMaxBid = '"+mybid+"', maxBidUserName = '"+ username +"' where auctionId = '" + auctionId +"'");
+			}
+		 	else {
+				bidamt = Math.min(highestAmount, secondHighestAmount + increment);
+				if(bidamt <= currentMaxBid) {
+					bidamt = Integer.parseInt(mybid);
+				}
+		 	}
+			
+			//find name of highest bidder;
+			rs1 = stmt.executeQuery("select * from bidding where auctionId = " + "'"+auctionId+"' order by upperLimit desc limit 1 offset 0");
+			rs1.next();
+			System.out.println(rs1.getString("username"));			
+			
+	 		stmt.executeUpdate("update auction set currentMaxBid = '"+ bidamt +"', maxBidUserName = '"+ rs1.getString("username") +"' where auctionId = '" + auctionId +"'");
+
+		}
+		else{
+	 		stmt.executeUpdate("update auction set currentMaxBid = '"+mybid+"', maxBidUserName = '"+ username +"' where auctionId = '" + auctionId +"'");
+		}
+	
+ 		BidSystem bs=new BidSystem();
+ 		bs.AutoBid(username, auctionId);
 	}catch(Exception e){
  		out.println(e.getMessage());
  	}
