@@ -30,7 +30,7 @@
 	while(rs.next()){
 		out.println("Dimension - " + rs.getString("dimensions")+"</br>");
 		out.println("Weight - " + rs.getString("weight") +"</br>");
-		out.println("ProductImages - " + rs.getString("productImages") +"</br>");
+		out.println("ProductImages - " + rs.getString("productImages") +"</br>"+"</br>");
 /* 		out.println(rs.getString("dimensions"));
  */	}
 	String auctionId = request.getParameter("auctionid");
@@ -61,14 +61,25 @@
  	
  	
 	%>
-	<form action="bidInsert.jsp" method="post">
-		  <label for="currentbid">Current Bid on this product :</label><br>
-		  <input type="text" id="currentbid" name="currentbid" disabled value = "<%=currentMaxBid%>"><br>
+	<form action="bidInsert.jsp" method="post" style="padding: 8px">
+		  <label for="currentbid"><b>Current Bid on this product :</b></label><br>
+		  <input type="text" id="currentbid" name="currentbid" disabled value = "<%=currentMaxBid%>"><br><br>
 		  <!-- <label for="myBid">Put your bid higher than current bid:</label><br>
 		  <input type="text" id="myBid" name="myBid"><br> -->
+		  
+		   <label ><b>Select Bidding Type:</b></label><br>
+		   <input type="radio" onclick="javascript:bidTypeChange(this.id);" name="manualBid" id="manualBid" value=1/>Manual Bid&nbsp;&nbsp;
+		   <input type="radio" onclick="javascript:bidTypeChange(this.id);" name="autoBid" id="autoBid" value=0/>Auto Bid<br>
+		  
 		  <input type="text" id="mybid" name="mybid" hidden value = "<%=newBid + increment%>">
-		  <label for="uplimit">Enter Upper Limit</label><br>
-		  <input type="text" id="uplimit" name="uplimit"><br>
+		  
+		  <div style="padding-left: 25px; padding-top: 8px;">
+			  <label for="uplimit" id="upLimitLabel" style="display:none">Enter Upper Limit</label>
+			  <input type="text" id="uplimit" name="uplimit" style="display:none"><br>
+			  <label for="bidBuyerSide" id="bidBuyerSideLabel" style="display:none">Bid Increment Buyer Side:</label>
+			  <input type="number" id="bidBuyerSide" name="bidBuyerSide" style="display:none"><br>
+		  </div>
+		  
 		  
 		  <input type="text" id="auctionId" name="auctionId" hidden value = "<%=auctionId%>">
 		  <input type="text" id="username" name="username" hidden value = "<%=session.getAttribute("username")%>">
@@ -81,4 +92,27 @@
 		 
 	</form>
 </body>
+<script type="text/javascript">
+
+function bidTypeChange(id) {
+	
+	if(id == 'manualBid'){
+		document.getElementById('manualBid').checked = true;
+		document.getElementById('uplimit').style.display = 'none';
+		document.getElementById('upLimitLabel').style.display = 'none';
+		document.getElementById('bidBuyerSide').style.display = 'none';
+		document.getElementById('bidBuyerSideLabel').style.display = 'none';
+		document.getElementById('autoBid').checked = false;
+	}
+	else{
+		document.getElementById('autoBid').checked = true;
+		document.getElementById('uplimit').style.display = 'block';
+		document.getElementById('upLimitLabel').style.display = 'block';
+		document.getElementById('bidBuyerSide').style.display = 'block';
+		document.getElementById('bidBuyerSideLabel').style.display = 'block';
+		document.getElementById('manualBid').checked = false;
+	}
+
+}
+</script>
 </html>
