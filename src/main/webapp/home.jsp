@@ -118,6 +118,14 @@ td{
 </div>
 
 <div id="myListings" class="tabcontent">
+  <input type="text" id="myInput1" onkeyup="filterTable('myListingsTable', this.value, document.getElementById('mySelect1').value)" placeholder="Search...">
+    <select id="mySelect1" onchange="filterTable('myListingsTable', document.getElementById('myInput1').value, this.value)">
+      <option value="0">All Columns</option>
+      <option value="1">Product Name</option>
+      <option value="3">Initial Price</option>
+      <option value="4">Product Category</option>
+      <option value="5">Auction Status</option>
+    </select>
   <%
 		DBHelper db = new DBHelper();	
 		Connection connection = db.getConnection();
@@ -125,7 +133,7 @@ td{
 			Statement stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName where p.username='"+session.getAttribute("username")+"';");
 			out.println("<div style='width: 100%;'>");
-			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
+			out.println("<table id='myListingsTable'  style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
 			while(rs.next()){
 			    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 			    
@@ -178,6 +186,14 @@ td{
 </div>
 
 <div id="forSale" class="tabcontent">
+  <input type="text" id="myInput2" onkeyup="filterTable('forSaleTable', this.value, document.getElementById('mySelect2').value)" placeholder="Search...">
+    <select id="mySelect2" onchange="filterTable('forSaleTable', document.getElementById('myInput2').value, this.value)">
+      <option value="0">All Columns</option>
+      <option value="1">Product Name</option>
+      <option value="3">Initial Price</option>
+      <option value="4">Product Category</option>
+      <option value="5">Auction Status</option>
+    </select>
   <%
 		DBHelper db1 = new DBHelper();	
 		Connection connection1 = db1.getConnection();
@@ -185,7 +201,7 @@ td{
 			Statement stmt1 = connection1.createStatement();
 			ResultSet rs1 = stmt1.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName");
 			out.println("<div style='width: 100%;'>");
-			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
+			out.println("<table id='forSaleTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
 			
 			while(rs1.next()){
 			    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -245,6 +261,15 @@ td{
 </div>
 
 <div id="myBids" class="tabcontent">
+  <input type="text" id="myInput3" onkeyup="filterTable('myBidsTable', this.value, document.getElementById('mySelect3').value)" placeholder="Search...">
+    <select id="mySelect3" onchange="filterTable('myBidsTable', document.getElementById('myInput3').value, this.value)">
+      <option value="0">All Columns</option>
+      <option value="1">Product Name</option>
+      <option value="3">Auction Status</option>
+      <option value="4">Current Max Bid</option>
+      <option value="5">Your Bid</option>
+      <option value="6">Your Upper Limit</option>
+    </select>
 
   <%
 		DBHelper db2 = new DBHelper();	
@@ -253,7 +278,7 @@ td{
 			Statement stmt2 = connection2.createStatement();
 			ResultSet rs2 = stmt2.executeQuery("SELECT p.productId, a.auctionId, p.productImages, p.productName, a.auctionStatus, a.currentMaxBid, b.upperLimit, b.bidPrice FROM bidding b JOIN auction a ON b.auctionId = a.auctionId JOIN product p ON a.productId = p.productId WHERE a.endTime > NOW() AND b.username='"+session.getAttribute("username")+"';");
 			out.println("<div style='width: 100%;'>");
-			out.println("<table style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Auction Status</th><th>Current Max Bid</th><th>Your Bid</th></th><th>Your Upper Limit</th></tr>");
+			out.println("<table id='myBidsTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Auction Status</th><th>Current Max Bid</th><th>Your Bid</th></th><th>Your Upper Limit</th></tr>");
 			while(rs2.next()){
 				out.println("<tr><td>"+ rs2.getString("productName")+"</td>");
 				out.println("<td>"+ rs2.getString("productImages")+"</td>");
@@ -276,6 +301,35 @@ td{
 		}
 		%> 
 </div>
+
+<script>
+function filterTable(tableId, searchText, columnNum) {
+	  var table = document.getElementById(tableId);
+	  var rows = table.getElementsByTagName("tr");
+	  for (var i = 1; i < rows.length; i++) {
+	    var cells = rows[i].getElementsByTagName("td");
+	    var found = false;
+	    if (columnNum == 0) {
+	      for (var j = 0; j < cells.length; j++) {
+	        if (cells[j].innerHTML.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+	          found = true;
+	          break;
+	        }
+	      }
+	    } else {
+	      if (cells[columnNum-1].innerHTML.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+	        found = true;
+	      }
+	    }
+	    if (found) {
+	      rows[i].style.display = "";
+	    } else {
+	      rows[i].style.display = "none";
+	    }
+	  }
+	}
+
+</script>
 	
 		
 </body>
