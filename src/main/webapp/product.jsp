@@ -106,8 +106,8 @@
 		  <input type="text" id="myBid" name="myBid"><br> -->
 		  
 		   <label ><b>Select Bidding Type:</b></label><br>
-		   <input type="radio" onclick="javascript:bidTypeChange(this.id);" name="manualBid" id="manualBid" value=1/>Manual Bid&nbsp;&nbsp;
-		   <input type="radio" onclick="javascript:bidTypeChange(this.id);" name="autoBid" id="autoBid" value=0/>Auto Bid<br>
+		   <input type="radio" onclick="javascript:bidTypeChange(this.id,<%= newBid + increment %>);" name="manualBid" id="manualBid" value=1/>Manual Bid&nbsp;&nbsp;
+		   <input type="radio" onclick="javascript:bidTypeChange(this.id, <%= newBid + increment %>);" name="autoBid" id="autoBid" value=0/>Auto Bid<br>
 		  
 		  <input type="text" id="mybid" name="mybid" hidden value = "<%=newBid + increment%>">		  
 		  <div style="padding-left: 25px; padding-top: 8px;">
@@ -131,7 +131,7 @@
 </body>
 <script type="text/javascript">
 
-function bidTypeChange(id) {
+function bidTypeChange(id, currentPrice) {
 	
 	if(id == 'manualBid'){
 		document.getElementById('manualBid').checked = true;
@@ -140,6 +140,7 @@ function bidTypeChange(id) {
 		document.getElementById('bidBuyerSide').style.display = 'none';
 		document.getElementById('bidBuyerSideLabel').style.display = 'none';
 		document.getElementById('autoBid').checked = false;
+		document.getElementById('uplimit').value = currentPrice;
 	}
 	else{
 		document.getElementById('autoBid').checked = true;
@@ -148,6 +149,7 @@ function bidTypeChange(id) {
 		document.getElementById('bidBuyerSide').style.display = 'block';
 		document.getElementById('bidBuyerSideLabel').style.display = 'block';
 		document.getElementById('manualBid').checked = false;
+		document.getElementById('uplimit').value ='';
 	}
 
 }
