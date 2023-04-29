@@ -8,6 +8,8 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.time.*" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
+<%@page import="EmailNotification.emailNotification"%>
+
 
 
 <!DOCTYPE html>
@@ -218,7 +220,7 @@ td{
 		Connection connection1 = db1.getConnection();
 		try{
 			Statement stmt1 = connection1.createStatement();
-			ResultSet rs1 = stmt1.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName");
+			ResultSet rs1 = stmt1.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName join enduser e on e.username = a.maxBidUserName");
 			out.println("<div style='width: 100%;'>");
 			out.println("<table id='forSaleTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name </th> <th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
 			
@@ -245,8 +247,11 @@ td{
 				out.println("<td>"+ rs1.getString("categoryName")+"</td>");
 				out.println("<td>"+ rs1.getString("auctionStatus")+"</td>");
 				
-				if((scheduleDate.compareTo(currentDate)<=0 && scheduleEndDate.compareTo(currentDate)>=0) && (scheduleTime.compareTo(currentTime)<=0 && scheduleEndTime.compareTo(currentTime)==1))  //auction start
+				if((scheduleDate.compareTo(currentDate)<=0 && scheduleEndDate.compareTo(currentDate)>=0) && (scheduleTime.compareTo(currentTime)<=0 && scheduleEndTime.compareTo(currentTime)==1)){
+					//auction start
 					out.println("<td><a href='product.jsp?auctionid="+rs1.getString("auctionId")+"&productid="+ rs1.getInt("productId")+"'> Details </td>");
+					
+				}
 				else if((scheduleEndDate.compareTo(currentDate) < 0) || (scheduleEndDate.compareTo(currentDate)<=0 && scheduleEndTime.compareTo(currentTime)<=0)) // auction stopped
 				{
 					int currentMax = rs1.getInt("currentMaxBid");
@@ -256,6 +261,9 @@ td{
 					{
 						//Bid won by maxBidUserName
 						out.println("<td><a href='product.jsp?auctionid="+rs1.getString("auctionId")+"&productid="+ rs1.getInt("productId")+"'> Bid won by "+rs1.getString("maxBidUserName")+" </td>");
+						
+						emailNotification.sendEmail(rs1.getString("emailId"),"Congratulations you won the auction!","You are the winner of the auction,check our website for more details");
+
 					}
 					else
 					{
