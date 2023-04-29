@@ -115,6 +115,7 @@ td{
   <button class="tablinks" onclick="openCity(event, 'myListings')">My Listings</button>
   <button class="tablinks" onclick="openCity(event, 'forSale')">For Sale</button>
   <button class="tablinks" onclick="openCity(event, 'myBids')">My Bids</button>
+  <button class="tablinks" onclick="openCity(event, 'FAQ')">FAQ</button>
 </div>
 
 <div id="myListings" class="tabcontent">
@@ -328,6 +329,37 @@ td{
 		%> 
 </div>
 
+<div id="FAQ" class="tabcontent">
+    
+	<input placeholder="Search by keywords ..." id="faqSearchInput" style="width: 100%; margin-top: 10px;" onkeyup="filterFAQs(this.value)">
+	
+	<div style="width: 100%; margin-top: 10px;">
+	 <%
+		DBHelper db3 = new DBHelper();	
+		Connection connection3 = db3.getConnection();
+		try{
+			Statement stmt3 = connection3.createStatement();
+			ResultSet rs3 = stmt3.executeQuery("SELECT * from faq;");
+			out.println("<div style='width: 100%;'>");
+			out.println("<table id='faqTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Question</th><th>Answer</th></tr>");
+			while(rs3.next()){
+				out.println("<tr><td>"+ rs3.getString("question")+"</td>");
+				out.println("<td>"+ rs3.getString("answer")+"</td>");
+
+				out.println("</tr>");
+			}
+			out.println("</table>");
+			out.println("</div>");
+
+		}
+		catch (Exception e) {
+	 		out.println(e.getMessage());
+
+		}
+		%> 
+	</div>
+</div>
+
 <script>
 function filterTable(tableId, searchText, columnNum) {
 	  var table = document.getElementById(tableId);
@@ -347,6 +379,28 @@ function filterTable(tableId, searchText, columnNum) {
 	        found = true;
 	      }
 	    }
+	    if (found) {
+	      rows[i].style.display = "";
+	    } else {
+	      rows[i].style.display = "none";
+	    }
+	  }
+	}
+
+function filterFAQs( searchText, columnNum) {
+	  var table = document.getElementById('faqTable');
+	  var rows = table.getElementsByTagName("tr");
+	  for (var i = 1; i < rows.length; i++) {
+	    var cells = rows[i].getElementsByTagName("td");
+	    var found = false;
+	  
+	      for (var j = 0; j < cells.length; j++) {
+	        if (cells[j].innerHTML.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+	          found = true;
+	          break;
+	        }
+	      }
+	    
 	    if (found) {
 	      rows[i].style.display = "";
 	    } else {
@@ -383,8 +437,7 @@ function sortTable(tableId, sortById) {
 	  var sortByName = document.getElementById(sortById);
 	  
 	  var sortByColumn = 0;
-	  
-	  console.log(sortByName.value)
+	 
 	  
 	  switch(sortByName.value){
 	  	case 1:
