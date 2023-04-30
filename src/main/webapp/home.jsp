@@ -261,10 +261,10 @@ td{
 					{
 						//Bid won by maxBidUserName
 						out.println("<td><a href='product.jsp?auctionid="+rs1.getString("auctionId")+"&productid="+ rs1.getInt("productId")+"'> Bid won by "+rs1.getString("maxBidUserName")+" </td>");
-						Statement stmt2 = connection1.createStatement();
-						ResultSet rs2 = stmt1.executeQuery("Select * from enduser e where e.username='"+rs1.getString("maxBidUserName")+"'");
-						while (rs2.next()){
-	 						emailNotification.sendEmail(rs2.getString("emailId"),"Congratulations you won the auction!","You are the winner of the auction,check our website for more details");
+						Statement stmt5 = connection1.createStatement();
+						ResultSet rs5 = stmt5.executeQuery("Select * from enduser e where e.username='"+rs1.getString("maxBidUserName")+"'");
+						while (rs5.next()){
+	 						emailNotification.sendEmail(rs5.getString("emailId"),"Congratulations you won the auction!","You are the winner of the auction,check our website for more details");
 						}
 
 					}
