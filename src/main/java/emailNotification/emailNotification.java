@@ -10,7 +10,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-public class emailNotification {
+public class EmailNotification {
     public static void sendEmail(String to, String subject, String body) throws AddressException, MessagingException {
         String from = "tankirkjan@gmail.com"; // Replace with your Gmail email address
         String password = "02B8EA85B714DF49C5EC36CA660D8846646F"; // Replace with your Gmail email password
