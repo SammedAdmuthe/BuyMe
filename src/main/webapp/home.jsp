@@ -222,7 +222,7 @@ td{
 			Statement stmt1 = connection1.createStatement();
 			ResultSet rs1 = stmt1.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName");
 			out.println("<div style='width: 100%;'>");
-			out.println("<table id='forSaleTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name </th> <th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
+			out.println("<table id='forSaleTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name </th> <th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th><th>Set Alert</th></tr>");
 			
 			while(rs1.next()){
 			    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -250,6 +250,11 @@ td{
 				if((scheduleDate.compareTo(currentDate)<=0 && scheduleEndDate.compareTo(currentDate)>=0) && (scheduleTime.compareTo(currentTime)<=0 && scheduleEndTime.compareTo(currentTime)==1)){
 					//auction start
 					out.println("<td><a href='product.jsp?auctionid="+rs1.getString("auctionId")+"&productid="+ rs1.getInt("productId")+"'> Details </td>");
+					Statement state=connection1.createStatement();
+					ResultSet results=state.executeQuery("select * from alerts where auctionId="+rs1.getInt("auctionId")+";");
+					while(results.next()){
+						emailNotification.sendEmail(results.getString("emailId"),"Auction is Live NOW","Auction live now:"+rs1.getString("productName"));
+					}
 					
 				}
 				else if((scheduleEndDate.compareTo(currentDate) < 0) || (scheduleEndDate.compareTo(currentDate)<=0 && scheduleEndTime.compareTo(currentTime)<=0)) // auction stopped
@@ -275,6 +280,10 @@ td{
 				}
 				else {
 					out.println("<td>Will be live soon</td>");
+					out.println("<td><a href='alert.jsp?auctionId="+rs1.getString("auctionId")+"'> Alert Me </td>");
+
+
+
 				}
 				out.println("</tr>");
 			}
@@ -288,6 +297,8 @@ td{
 		}
 		%> 
 </div>
+
+
 
 <div id="myBids" class="tabcontent">
   <input type="text" id="myInput3" onkeyup="filterTable('myBidsTable', this.value, document.getElementById('mySelect3').value)" placeholder="Search...">
@@ -420,9 +431,11 @@ function filterFAQs( searchText, columnNum) {
 	}
 
 </script>
-	
 		
 </body>
+
+
+
 
 <script>
 function openCity(evt, cityName) {
