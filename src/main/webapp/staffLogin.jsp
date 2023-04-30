@@ -16,15 +16,16 @@
 
 	<div style="height: 100%; width: 100%; background-image: linear-gradient(to right,#0099ff, #e6f5ff);
  display: flex; justify-content: center;">
-	<form method = "post" action = "login.jsp" style="height: 300px; width: 300px; padding: 10px;
+	<form method = "post" action = "staffLoginVerification.jsp" style="height: 300px; width: 300px; padding: 8px;
 	 background-color: #e6f5ff; margin-top: 10%; border-style: groove; border-color: #b3e0ff">
 	 <div style="display: flex;">
 	 <h1 style="color: #0099ff; margin-left: 25%">Buy</h1>
 	 <h1 style="color: #00cc99">Me</h1>
 	 <h1 style="color: #0099ff">!</h1>
+	 <h1 style="color: #00cc99">(Staff)</h1>
 	 </div>
 		<p>
-	     <label style="font-weight: 600" class="required">Username: </label><br>
+	     <label style="font-weight: 600" class="required">Staff username: </label><br>
 	     <input type="text" id="username" name = "username" required
 	      placeholder="Please enter username" style="width: 98%"/>
 	    </p>
@@ -35,13 +36,8 @@
 	    </p>
 	    <div style="text-align: center;">
 	    	<input type="submit" id="registerSubmit" value="Sign In" />	&nbsp;
-	    	<span>or</span>&nbsp;
-	    	<a href="signup.jsp" style="text-decoration: none;">Sign Up</a>
+	    
 	    </div>
-
-		<div style="margin-top: 20px;">
-			<a href="staffLogin.jsp" style="text-decoration: none;">Click here </a><span>to sign in as staff.</span>
-		</div>
 
 	    <% if (session.getAttribute("errorMessage") == null ) { %>
          <p> </p>
