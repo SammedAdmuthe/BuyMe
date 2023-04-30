@@ -10,20 +10,16 @@
 <title>BuyMe</title>
 </head>
 <body>
+
     <%
-        String username = request.getParameter("username");
         String fname = request.getParameter("fname");
         String lname = request.getParameter("lname");
-        String address = request.getParameter("address");
-        String phone = request.getParameter("phone");
-        String dob = request.getParameter("dob");
-        String email = request.getParameter("email");
+        String username = request.getParameter("username");
         String pwd = request.getParameter("pwd");
         String cpwd = request.getParameter("cpwd");
 
-        if(!pwd.equals(cpwd))
-        {
-            response.sendRedirect("signup.jsp");
+        if(!pwd.equals(cpwd)){
+            response.sendRedirect("staffSignUp.jsp");
         }
 
         DBHelper dbhelper = new DBHelper();
@@ -35,22 +31,25 @@
 
         try{
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from enduser where username = " + "'"+username+"'");
+            ResultSet rs = stmt.executeQuery("select * from STAFF where username = " + "'"+username+"'");
             if(rs.first()) {
-                response.sendRedirect("signup.jsp");
+                session.setAttribute("errorMessage", "Username already exists");
+                response.sendRedirect("staffSignUp.jsp");
             }
             else
             {
                 // username, fname, lname, password, dob, address, phone, email
-                System.out.println("Inserting into enduser table");
-                stmt.executeUpdate("insert into enduser(username, firstName, lastName, password, dob, address, phoneNo, emailId) values("+ "'"+username+"'" + "," + "'"+fname+"'" + "," + "'"+lname+"'" + "," + "'"+passwordEncrypter.encrypt(pwd)+"'" + "," + "'"+dob+"'" + "," + "'"+address+"'" + "," + "'"+phone+"'" + "," + "'"+email+"'" + ")");
-                session.setAttribute("username",username);
-                response.sendRedirect("home.jsp");
+                System.out.println("Inserting into staff table");
+                stmt.executeUpdate("insert into staff(username, firstName, lastName, password) values("+ "'"+username+"'" + "," + "'"+fname+"'" + "," + "'"+lname+"'" + "," + "'"+passwordEncrypter.encrypt(pwd)+"'" + ")");
+
+                response.sendRedirect("admin.jsp");
             }
         }catch(Exception e){
             out.println(e);
         }finally{
             dbhelper.closeConnection(connection);
         }
+
     %>
 </body>
+</html>
