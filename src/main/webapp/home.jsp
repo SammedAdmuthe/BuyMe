@@ -220,7 +220,7 @@ td{
 		Connection connection1 = db1.getConnection();
 		try{
 			Statement stmt1 = connection1.createStatement();
-			ResultSet rs1 = stmt1.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName join enduser e on e.username = a.maxBidUserName");
+			ResultSet rs1 = stmt1.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName");
 			out.println("<div style='width: 100%;'>");
 			out.println("<table id='forSaleTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name </th> <th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
 			
@@ -261,8 +261,11 @@ td{
 					{
 						//Bid won by maxBidUserName
 						out.println("<td><a href='product.jsp?auctionid="+rs1.getString("auctionId")+"&productid="+ rs1.getInt("productId")+"'> Bid won by "+rs1.getString("maxBidUserName")+" </td>");
-						
-						emailNotification.sendEmail(rs1.getString("emailId"),"Congratulations you won the auction!","You are the winner of the auction,check our website for more details");
+						Statement stmt2 = connection1.createStatement();
+						ResultSet rs2 = stmt1.executeQuery("Select * from enduser e where e.username='"+rs1.getString("maxBidUserName")+"'");
+						while (rs2.next()){
+	 						emailNotification.sendEmail(rs2.getString("emailId"),"Congratulations you won the auction!","You are the winner of the auction,check our website for more details");
+						}
 
 					}
 					else
@@ -272,7 +275,6 @@ td{
 				}
 				else {
 					out.println("<td>Will be live soon</td>");
-
 				}
 				out.println("</tr>");
 			}
