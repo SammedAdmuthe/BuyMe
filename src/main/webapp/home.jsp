@@ -264,8 +264,8 @@ td{
 						Statement stmt5 = connection1.createStatement();
 						ResultSet rs5 = stmt5.executeQuery("Select * from enduser e where e.username='"+rs1.getString("maxBidUserName")+"'");
 						while (rs5.next()){
-	 						emailNotification.sendEmail(rs5.getString("emailId"),"Congratulations you won the auction!","You are the winner of the auction,check our website for more details");
-						}
+/* 	 						emailNotification.sendEmail(rs5.getString("emailId"),"Congratulations you won the auction!","You are the winner of the auction,check our website for more details");
+ */						}
 
 					}
 					else
