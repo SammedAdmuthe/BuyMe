@@ -32,6 +32,9 @@
             <input type="password" id="pwd" name="pwd" required><br>
             <label for="cpwd">Confirm Password:</label><br>
             <input type="password" id="cpwd" name="cpwd" required><br>
+            <br>
+            <label for="cpwd">Secret Key:</label><br>
+            <input type="password" id="sid" name="sid"><br>
             <input type="submit" value="Submit">
         </form>
     </div>

@@ -42,7 +42,18 @@
             else
             {
                 // username, fname, lname, password, dob, address, phone, email
-                stmt.executeUpdate("insert into enduser(username, firstName, lastName, password, dob, address, phoneNo, emailId) values("+ "'"+username+"'" + "," + "'"+fname+"'" + "," + "'"+lname+"'" + "," + "'"+passwordEncrypter.encrypt(pwd)+"'" + "," + "'"+dob+"'" + "," + "'"+address+"'" + "," + "'"+phone+"'" + "," + "'"+email+"'" + ")");
+                String secretKey = request.getParameter("sid");
+                if(secretKey==null){
+                    System.out.println("Inserting into enduser table");
+                    stmt.executeUpdate("insert into enduser(username, firstName, lastName, password, dob, address, phoneNo, emailId) values("+ "'"+username+"'" + "," + "'"+fname+"'" + "," + "'"+lname+"'" + "," + "'"+passwordEncrypter.encrypt(pwd)+"'" + "," + "'"+dob+"'" + "," + "'"+address+"'" + "," + "'"+phone+"'" + "," + "'"+email+"'" + ")");
+                }
+                else{
+                    // Insert into STAFF table
+                    //username, firstname, lastname, password
+                    System.out.println("Inserting into staff table");
+                    stmt.executeUpdate("insert into staff(username, firstName, lastName, password) values("+ "'"+username+"'" + "," + "'"+fname+"'" + "," + "'"+lname+"'" + "," + "'"+passwordEncrypter.encrypt(pwd)+"'" + ")");
+
+                }
                 session.setAttribute("username",username);
                 response.sendRedirect("home.jsp");
             }
