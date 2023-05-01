@@ -112,6 +112,7 @@
 	
  		BidSystem bs=new BidSystem();
  		bs.AutoBid(username, auctionId);
+ 		response.sendRedirect("home.jsp");
 	}catch(Exception e){
  		out.println(e.getMessage());
  	}

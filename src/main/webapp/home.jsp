@@ -116,7 +116,7 @@ td{
 	<div class="tab">
   <button class="tablinks" onclick="openCity(event, 'myListings')">My Listings</button>
   <button class="tablinks" onclick="openCity(event, 'forSale')">For Sale</button>
-  <button class="tablinks" onclick="openCity(event, 'myBids')">My Bids</button>
+    <button class="tablinks" onclick="openCity(event, 'myBids')">My Bids</button>
   <button class="tablinks" onclick="openCity(event, 'FAQ')">FAQ</button>
   <button class="tablinks" onclick="openCity(event, 'askQueries')">Ask Queries</button>
   <button class="tablinks" onclick="openCity(event, 'myQueries')">My Queries</button>
@@ -147,7 +147,7 @@ td{
 			Statement stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName where p.username='"+session.getAttribute("username")+"';");
 			out.println("<div style='width: 100%;'>");
-			out.println("<table id='myListingsTable'  style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
+			out.println("<table id='myListingsTable'  style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Initial Price</th><th>Product Category</th><th>Details</th></tr>");
 			while(rs.next()){
 			    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 			    
@@ -181,12 +181,6 @@ td{
 				out.println("<tr><td>"+ rs.getString("productName")+"</td>");
 				out.println("<td>"+ rs.getString("initialPrice")+"</td>");
 				out.println("<td>"+ rs.getString("categoryName")+"</td>");
-				if(Integer.parseInt(rs.getString("auctionStatus")) == 0){
-					out.println("<td>Closed</td>");
-				}
-				else{
-					out.println("<td>Live</td>");
-				}
 				
 				
 				out.println("<td><a href='product.jsp?auctionid="+rs.getString("auctionId")+"&productid="+ rs.getInt("productId")+"'> Details </td>");
@@ -229,7 +223,7 @@ td{
 			Statement stmt1 = connection1.createStatement();
 			ResultSet rs1 = stmt1.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName");
 			out.println("<div style='width: 100%;'>");
-			out.println("<table id='forSaleTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name </th> <th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th><th>History</th><th>Set Alert</th></tr>");
+			out.println("<table id='forSaleTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name </th> <th>Initial Price</th><th>Product Category</th><th>Details</th><th>History</th><th>Set Alert</th></tr>");
 			
 			while(rs1.next()){
 			    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -251,12 +245,7 @@ td{
 				out.println("<tr><td>"+ rs1.getString("productName")+"</td>");
 				out.println("<td>"+ rs1.getString("initialPrice")+"</td>");
 				out.println("<td>"+ rs1.getString("categoryName")+"</td>");
-				if(Integer.parseInt(rs1.getString("auctionStatus")) == 0){
-					out.println("<td>Closed</td>");
-				}
-				else{
-					out.println("<td>Live</td>");
-				}
+				
 				
 				if((scheduleDate.compareTo(currentDate)<=0 && scheduleEndDate.compareTo(currentDate)>=0) && (scheduleTime.compareTo(currentTime)<=0 && scheduleEndTime.compareTo(currentTime)==1)){
 					//auction start
@@ -281,6 +270,11 @@ td{
 						out.println("<td><a href='product.jsp?auctionid="+rs1.getString("auctionId")+"&productid="+ rs1.getInt("productId")+"'> Bid won by "+rs1.getString("maxBidUserName")+" </td>");
 						Statement stmt5 = connection1.createStatement();
 						ResultSet rs5 = stmt5.executeQuery("Select * from enduser e where e.username='"+rs1.getString("maxBidUserName")+"'");
+						PreparedStatement ps = connection.prepareStatement("update bidding set didWin = 1 where auctionId = ? and username = ?");
+						ps.setString(1, rs1.getString("auctionId"));
+						ps.setString(2, rs1.getString("maxBidUserName"));
+						ps.executeUpdate();
+						
 						while (rs5.next()){
 /* 	 						emailNotification.sendEmail(rs5.getString("emailId"),"Congratulations you won the auction!","You are the winner of the auction,check our website for more details");
  */						}
@@ -344,7 +338,7 @@ td{
 			Statement stmt2 = connection2.createStatement();
 			ResultSet rs2 = stmt2.executeQuery("SELECT p.productId, a.auctionId, p.productImages, p.productName, a.auctionStatus, a.currentMaxBid, b.upperLimit, b.bidPrice FROM bidding b JOIN auction a ON b.auctionId = a.auctionId JOIN product p ON a.productId = p.productId WHERE a.endTime > NOW() AND b.username='"+session.getAttribute("username")+"';");
 			out.println("<div style='width: 100%;'>");
-			out.println("<table id='myBidsTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Auction Status</th><th>Current Max Bid</th><th>Your Bid</th></th><th>Your Upper Limit</th></tr>");
+			out.println("<table id='myBidsTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Current Max Bid</th><th>Your Bid</th></th><th>Your Upper Limit</th></tr>");
 			while(rs2.next()){
 				out.println("<tr><td>"+ rs2.getString("productName")+"</td>");
 
@@ -527,13 +521,14 @@ function sortTable(tableId, sortById) {
 	  var sortByColumn = 0;
 	 
 	  
+	  
 	  switch(sortByName.value){
 	  	case 1:
 	  		sortByColumn = 0;
 	  	case 3:
-	  		sortByColumn = 2;
+	  		sortByColumn = 1;
 	  	case 4:
-	  		sortByColumn = 3;
+	  		sortByColumn = 2;
 	  	case 5:
 	  		sortByColumn = 4;
 		  
@@ -554,11 +549,21 @@ function sortTable(tableId, sortById) {
 	      x = rows[i].getElementsByTagName("TD")[sortByColumn];
 	      y = rows[i + 1].getElementsByTagName("TD")[sortByColumn];
 	      //check if the two rows should switch place:
-	      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-	        //if so, mark as a switch and break the loop:
-	        shouldSwitch = true;
-	        break;
-	      }
+	    if(sortByName.value != 3){
+	    	if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+		        //if so, mark as a switch and break the loop:
+		        shouldSwitch = true;
+		        break;
+		      }
+	    }
+	    else{
+	    	if (x.innerHTML > y.innerHTML) {
+		        //if so, mark as a switch and break the loop:
+		        shouldSwitch = true;
+		        break;
+		      }
+	    }
+	      
 	    }
 	    if (shouldSwitch) {
 	      /*If a switch has been marked, make the switch

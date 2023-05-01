@@ -41,7 +41,8 @@ td{
 	String productID = request.getParameter("productid");
  	ResultSet rs = stmt.executeQuery("select * from product where productId = " + "'"+productID+"'");
  	rs.next();
-
+ 	
+	String sellerUsername = rs.getString("username");
  	String productCategory = rs.getString("categoryName");
  	//out.println(productCategory);
  	
@@ -133,7 +134,7 @@ td{
 		  <input type="text" id="username" name="username" hidden value = "<%=session.getAttribute("username")%>">
 <!-- 		  || (userMaxLimit >= currentMaxBid)
  -->		  
- 		  <%if(session.getAttribute("username").equals(maxBidUserName)){ %>
+ 		  <%if(session.getAttribute("username").equals(maxBidUserName) && session.getAttribute("username").equals(sellerUsername)){ %>
 		   <input type="submit" disabled value = "Set New Bid for $<%=newBid + increment%>">
 		  <%} else {%>
 		  	<input type="submit" value = "Set New Bid  for $<%=newBid + increment%>">
