@@ -47,7 +47,14 @@
 			
 /* 			emailNotification.sendEmail("tanyasharma2614@gmail.com","hi","hello");
  */			
- 			response.sendRedirect("customerRepPortal.jsp");
+
+			int isAdmin = rs.getInt("isAdmin");
+			if(isAdmin == 1){
+				session.setAttribute("isAdmin", "true");
+				response.sendRedirect("admin.jsp");
+			}else{
+				response.sendRedirect("customerRepPortal.jsp");
+			}
  		}
 		else
 		{
