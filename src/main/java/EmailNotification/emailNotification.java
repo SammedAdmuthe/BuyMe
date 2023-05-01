@@ -13,7 +13,7 @@ import java.util.Properties;
 public class emailNotification {
     public static void sendEmail(String to, String subject, String body) throws AddressException, MessagingException {
         String from = "tankirkjan@gmail.com"; // Replace with your Gmail email address
-        String password = "02B8EA85B714DF49C5EC36CA660D8846646F"; // Replace with your Gmail email password
+        String password = "FCCFE0A0146583254FBF2CF7F327EF040B9E"; // Replace with your Gmail email password
 
         // Set up the SMTP server properties
         Properties props = new Properties();
