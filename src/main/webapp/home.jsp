@@ -147,7 +147,7 @@ td{
 			Statement stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName where p.username='"+session.getAttribute("username")+"';");
 			out.println("<div style='width: 100%;'>");
-			out.println("<table id='myListingsTable'  style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
+			out.println("<table id='myListingsTable'  style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th></tr>");
 			while(rs.next()){
 			    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 			    
@@ -179,7 +179,6 @@ td{
 				String scheduleStart = rs.getString("startTime");
 				System.out.println("HERE !! "+ formatter6); */
 				out.println("<tr><td>"+ rs.getString("productName")+"</td>");
-				out.println("<td>"+ rs.getString("productImages")+"</td>");
 				out.println("<td>"+ rs.getString("initialPrice")+"</td>");
 				out.println("<td>"+ rs.getString("categoryName")+"</td>");
 				out.println("<td>"+ rs.getString("auctionStatus")+"</td>");
@@ -224,7 +223,7 @@ td{
 			Statement stmt1 = connection1.createStatement();
 			ResultSet rs1 = stmt1.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName");
 			out.println("<div style='width: 100%;'>");
-			out.println("<table id='forSaleTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name </th> <th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th><th>History</th><th>Set Alert</th></tr>");
+			out.println("<table id='forSaleTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name </th> <th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th><th>History</th><th>Set Alert</th></tr>");
 			
 			while(rs1.next()){
 			    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -244,7 +243,6 @@ td{
  				System.out.println(scheduleEndTime.compareTo(currentTime)); */
  				
 				out.println("<tr><td>"+ rs1.getString("productName")+"</td>");
-				out.println("<td>"+ rs1.getString("productImages")+"</td>");
 				out.println("<td>"+ rs1.getString("initialPrice")+"</td>");
 				out.println("<td>"+ rs1.getString("categoryName")+"</td>");
 				out.println("<td>"+ rs1.getString("auctionStatus")+"</td>");
@@ -335,10 +333,10 @@ td{
 			Statement stmt2 = connection2.createStatement();
 			ResultSet rs2 = stmt2.executeQuery("SELECT p.productId, a.auctionId, p.productImages, p.productName, a.auctionStatus, a.currentMaxBid, b.upperLimit, b.bidPrice FROM bidding b JOIN auction a ON b.auctionId = a.auctionId JOIN product p ON a.productId = p.productId WHERE a.endTime > NOW() AND b.username='"+session.getAttribute("username")+"';");
 			out.println("<div style='width: 100%;'>");
-			out.println("<table id='myBidsTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Product Image</th><th>Auction Status</th><th>Current Max Bid</th><th>Your Bid</th></th><th>Your Upper Limit</th></tr>");
+			out.println("<table id='myBidsTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name</th><th>Auction Status</th><th>Current Max Bid</th><th>Your Bid</th></th><th>Your Upper Limit</th></tr>");
 			while(rs2.next()){
 				out.println("<tr><td>"+ rs2.getString("productName")+"</td>");
-				out.println("<td>"+ rs2.getString("productImages")+"</td>");
+
 				out.println("<td>"+ rs2.getString("auctionStatus")+"</td>");
 				out.println("<td>"+ rs2.getString("currentMaxBid")+"</td>");
 				out.println("<td>"+ rs2.getString("bidPrice")+"</td>");
