@@ -29,7 +29,6 @@ td{
 	
 	String auctionID = request.getParameter("auctionId");
  	
- 	System.out.println(auctionID);
  	try{
  		Statement stmt2 = connection2.createStatement();
 		ResultSet rs2 = stmt2.executeQuery("select * from bidding where auctionId = " + "'"+auctionID+"'");

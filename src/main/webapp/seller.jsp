@@ -29,9 +29,15 @@
 				<input type="text" id="productName" name = "productName" required
 				      placeholder="Please enter product name"><br><br>
 				      <select name="category" id="category">
-					  <option value="Mens">Mens</option>
-					  <option value="Womens">Womens</option>
-					  <option value="Kids">Kids</option>
+					  <option value="Mens">Accesories</option>
+					  <option value="Womens">Electronics</option>
+					  <option value="Kids">Toys</option>
+					  <option value="Mens">Clothes and Apparels</option>
+					  <option value="Womens">Games</option>
+					  <option value="Kids">Entertainment</option>
+					  <option value="Mens">Cars</option>
+					  <option value="Womens">Books</option>
+					  <option value="Kids">Music</option>
 					</select><br><br>
 					<input type="number" id="startingPrice" name = "startingPrice" required style="width: 180%"
 				      placeholder="Please enter starting price for the auction"><br><br>
