@@ -112,6 +112,7 @@ td{
 	<div class="tab">
   <button class="tablinks" onclick="openCity(event, 'allUsers')">All Users</button>
   <button class="tablinks" onclick="openCity(event, 'userQueries')">User Queries</button>
+  <button class="tablinks" onclick="openCity(event, 'allAuctions')">All Auctions</button>
 
 </div>
 
@@ -171,6 +172,37 @@ td{
 					out.println("<td><div style='display:flex; justify-content: space-between'><span style='margin-left: 0px'><b>Resolution:</b>"+ rs1.getString("answer")+"</span>&nbsp; &nbsp; <span><b>Status:</b>Resolved</span></div></td>");
 				}
 				
+				out.println("</tr>");
+			}
+			out.println("</table>");
+			//out.println("</form>");
+			out.println("</div>");
+			
+		}
+		catch (Exception e) {
+	 		out.println(e.getMessage());
+
+		}
+		%> 
+	</div>
+</div>
+
+<div id="allAuctions" class="tabcontent">
+<div style="width: 100%; margin-top: 10px;">
+	 <%
+		DBHelper db2 = new DBHelper();	
+		Connection connection2 = db1.getConnection();
+		String idName1 = "entry";
+		try{
+			Statement stmt2 = connection1.createStatement();
+			ResultSet rs2 = stmt2.executeQuery("SELECT * from auction;");
+			out.println("<div style='width: 100%;'>");
+			//out.println("");
+			out.println("<table id='allAuctionsTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>User</th><th>AuctionId</th><th>Take Action</th></tr>");
+			while(rs2.next()){
+				out.println("<tr><td>"+ rs2.getString("username")+"</td>");
+				out.println("<td>"+ rs2.getInt("auctionId")+"</td>");		
+				out.println("<td>"+ "<a href='deleteAuction.jsp?auctionId="+rs2.getInt("auctionId")+"'> Delete </td>");
 				out.println("</tr>");
 			}
 			out.println("</table>");
