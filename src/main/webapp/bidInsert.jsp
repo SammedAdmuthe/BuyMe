@@ -36,17 +36,17 @@
 /* 		out.println(currentMaxBid);
  */		if(no_records > 0)
 		{
-			PreparedStatement ps1 = connection.prepareStatement("update bidding set bidPrice=?, upperLimit=?, bidIncrement=? where username = ?");
+			PreparedStatement ps1 = connection.prepareStatement("update bidding set bidPrice=?, upperLimit=? where username = ?");
 			ps1.setString(1, mybid);
 			ps1.setString(2, upperLimit);
-			ps1.setString(3, bidIncBuyerSide);
-			ps1.setString(4, username);
+/* 			ps1.setString(3, bidIncBuyerSide);
+ */			ps1.setString(3, username);
 			ps1.executeUpdate();
 
 		}
 		else
 		{
-			int rs1 = stmt.executeUpdate("insert into bidding(auctionId, username, bidPrice, upperLimit, bidIncrement) values("+"'"+auctionId+"',"+"'"+username+"',"+"'"+mybid+"', '"+upperLimit+"','"+bidIncBuyerSide+"')");
+			int rs1 = stmt.executeUpdate("insert into bidding(auctionId, username, bidPrice, upperLimit) values("+"'"+auctionId+"',"+"'"+username+"',"+"'"+mybid+"', '"+upperLimit+"')");
 		}
  
  		//auto bidding logic for current max -----

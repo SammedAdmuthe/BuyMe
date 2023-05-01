@@ -224,7 +224,7 @@ td{
 			Statement stmt1 = connection1.createStatement();
 			ResultSet rs1 = stmt1.executeQuery("Select * from product p join auction a on p.productId = a.productId join category c on c.categoryName = p.categoryName");
 			out.println("<div style='width: 100%;'>");
-			out.println("<table id='forSaleTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name </th> <th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th><th>Set Alert</th></tr>");
+			out.println("<table id='forSaleTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product Name </th> <th>Product Image</th><th>Initial Price</th><th>Product Category</th><th>Auction Status</th><th>Details</th><th>History</th><th>Set Alert</th></tr>");
 			
 			while(rs1.next()){
 			    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -257,6 +257,8 @@ td{
 					while(results.next()){
 						emailNotification.sendEmail(results.getString("emailId"),"Auction is Live NOW","Auction live now:"+rs1.getString("productName"));
 					}
+					out.println("<td><a href='history.jsp?auctionId="+rs1.getString("auctionId")+"'> History </a></td>");
+
 					
 				}
 				else if((scheduleEndDate.compareTo(currentDate) < 0) || (scheduleEndDate.compareTo(currentDate)<=0 && scheduleEndTime.compareTo(currentTime)<=0)) // auction stopped
@@ -273,15 +275,20 @@ td{
 						while (rs5.next()){
 /* 	 						emailNotification.sendEmail(rs5.getString("emailId"),"Congratulations you won the auction!","You are the winner of the auction,check our website for more details");
  */						}
+						out.println("<td><a href='history.jsp?auctionId="+rs1.getString("auctionId")+"'> History </td>");
+
 
 					}
 					else
 					{
 						out.println("<td> No winner </td>");
+						out.println("<td><a href='history.jsp?auctionId="+rs1.getString("auctionId")+"'> History </td>");
+
 					}
 				}
 				else {
 					out.println("<td>Will be live soon</td>");
+					out.println("<td><a href='history.jsp?auctionId="+rs1.getString("auctionId")+"'> History </td>");
 					out.println("<td><a href='alert.jsp?auctionId="+rs1.getString("auctionId")+"'> Alert Me </td>");
 
 
