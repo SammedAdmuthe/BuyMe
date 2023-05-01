@@ -134,7 +134,7 @@ td{
 		  <input type="text" id="username" name="username" hidden value = "<%=session.getAttribute("username")%>">
 <!-- 		  || (userMaxLimit >= currentMaxBid)
  -->		  
- 		  <%if(session.getAttribute("username").equals(maxBidUserName) && session.getAttribute("username").equals(sellerUsername)){ %>
+ 		  <%if(session.getAttribute("username").equals(maxBidUserName) || session.getAttribute("username").equals(sellerUsername)){ %>
 		   <input type="submit" disabled value = "Set New Bid for $<%=newBid + increment%>">
 		  <%} else {%>
 		  	<input type="submit" value = "Set New Bid  for $<%=newBid + increment%>">
