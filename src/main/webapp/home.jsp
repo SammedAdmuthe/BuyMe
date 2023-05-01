@@ -181,7 +181,13 @@ td{
 				out.println("<tr><td>"+ rs.getString("productName")+"</td>");
 				out.println("<td>"+ rs.getString("initialPrice")+"</td>");
 				out.println("<td>"+ rs.getString("categoryName")+"</td>");
-				out.println("<td>"+ rs.getString("auctionStatus")+"</td>");
+				if(Integer.parseInt(rs.getString("auctionStatus")) == 0){
+					out.println("<td>Closed</td>");
+				}
+				else{
+					out.println("<td>Live</td>");
+				}
+				
 				
 				out.println("<td><a href='product.jsp?auctionid="+rs.getString("auctionId")+"&productid="+ rs.getInt("productId")+"'> Details </td>");
 
@@ -245,7 +251,12 @@ td{
 				out.println("<tr><td>"+ rs1.getString("productName")+"</td>");
 				out.println("<td>"+ rs1.getString("initialPrice")+"</td>");
 				out.println("<td>"+ rs1.getString("categoryName")+"</td>");
-				out.println("<td>"+ rs1.getString("auctionStatus")+"</td>");
+				if(Integer.parseInt(rs1.getString("auctionStatus")) == 0){
+					out.println("<td>Closed</td>");
+				}
+				else{
+					out.println("<td>Live</td>");
+				}
 				
 				if((scheduleDate.compareTo(currentDate)<=0 && scheduleEndDate.compareTo(currentDate)>=0) && (scheduleTime.compareTo(currentTime)<=0 && scheduleEndTime.compareTo(currentTime)==1)){
 					//auction start
