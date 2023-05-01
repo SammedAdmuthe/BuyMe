@@ -116,7 +116,34 @@ td{
 </div>
 
 <div id="allUsers" class="tabcontent">
-Hi
+	  <%
+		DBHelper db = new DBHelper();	
+		Connection connection = db.getConnection();
+		try{
+			Statement stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery("Select * from enduser");
+			out.println("<div style='width: 100%;'>");
+			out.println("<table id='myListingsTable'  style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>User Name</th><th>First Name</th><th>Last Name</th><th>Date of Birth</th><th> Address</th><th>Phone no</th><th>Email Address</th></tr>");
+			
+			while(rs.next()){
+				out.println("<tr><td>"+ rs.getString("username")+"</td>");
+				out.println("<td>"+ rs.getString("firstName")+"</td>");
+				out.println("<td>"+ rs.getString("lastName")+"</td>");
+				out.println("<td>"+ rs.getString("dob")+"</td>");
+				out.println("<td>"+ rs.getString("address")+"</td>");
+				out.println("<td>"+ rs.getString("phoneNo")+"</td>");
+				out.println("<td>"+ rs.getString("emailId")+"</td>");
+				out.println("<td>"+ "<a href='editUser.jsp?username="+rs.getString("username")+"'> Edit </td>");
+				out.println("<td>"+ "<a href='deleteUser.jsp?username="+rs.getString("username")+"'> Delete </td>");
+			}
+			out.println("</table>");
+			out.println("</div>");
+		}
+		catch(Exception e){
+	 		out.println(e.getMessage());
+
+		}
+	%>
 </div>
 
 <div id="userQueries" class="tabcontent">

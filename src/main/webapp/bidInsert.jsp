@@ -101,7 +101,7 @@
 			//find name of highest bidder;
 			rs1 = stmt.executeQuery("select * from bidding where auctionId = " + "'"+auctionId+"' order by upperLimit desc limit 1 offset 0");
 			rs1.next();
-			System.out.println(rs1.getString("username"));			
+			System.out.println(rs1.getString("username"));
 			
 	 		stmt.executeUpdate("update auction set currentMaxBid = '"+ bidamt +"', maxBidUserName = '"+ rs1.getString("username") +"' where auctionId = '" + auctionId +"'");
 
