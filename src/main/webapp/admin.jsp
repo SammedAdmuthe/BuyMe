@@ -19,6 +19,9 @@
             // Sales report
             ///////////////////////////////////////////////////
 
+            // Button to create a staff user
+            out.println("<a href='staffSignUp.jsp'><button> Create new Staff User</button></a>");
+            out.println("<br><br>");
 
             // Total Earnings
             out.println("Total Earnings<br>");
