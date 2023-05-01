@@ -118,6 +118,8 @@ td{
   <button class="tablinks" onclick="openCity(event, 'forSale')">For Sale</button>
   <button class="tablinks" onclick="openCity(event, 'myBids')">My Bids</button>
   <button class="tablinks" onclick="openCity(event, 'FAQ')">FAQ</button>
+  <button class="tablinks" onclick="openCity(event, 'askQueries')">Ask Queries</button>
+  <button class="tablinks" onclick="openCity(event, 'myQueries')">My Queries</button>
 </div>
 
 <div id="myListings" class="tabcontent">
@@ -367,6 +369,53 @@ td{
 				out.println("<tr><td>"+ rs3.getString("question")+"</td>");
 				out.println("<td>"+ rs3.getString("answer")+"</td>");
 
+				out.println("</tr>");
+			}
+			out.println("</table>");
+			out.println("</div>");
+
+		}
+		catch (Exception e) {
+	 		out.println(e.getMessage());
+
+		}
+		%> 
+	</div>
+</div>
+
+<div id="askQueries" class="tabcontent">
+<div style="padding: 10px;">
+<form action="submitUserQuery.jsp" action="POST">
+	<span><b>Your Query:</b></span>&nbsp;
+ 	<input type="text" placeholder='Please enter your query' name="queryField"><br>
+ 	<input type="text" id="usernameForQuery" name="usernameForQuery" hidden value = "<%=session.getAttribute("username")%>">
+ 	<input type="submit">
+</form>
+	
+ 	
+</div>
+
+</div>
+
+<div id="myQueries" class="tabcontent">
+ <div style="width: 100%; margin-top: 10px;">
+	 <%
+		DBHelper db5 = new DBHelper();	
+		Connection connection5 = db5.getConnection();
+		try{
+			Statement stmt5 = connection5.createStatement();
+			ResultSet rs5 = stmt5.executeQuery("SELECT * from userqueries where username='"+session.getAttribute("username")+"';");
+			out.println("<div style='width: 100%;'>");
+			out.println("<table id='faqTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Query</th><th>Resolution</th><th>Status</th></tr>");
+			while(rs5.next()){
+				out.println("<tr><td>"+ rs5.getString("query")+"</td>");
+				out.println("<td>"+ rs5.getString("answer")+"</td>");
+				if(rs5.getString("queryStatus").equals("1")){
+					out.println("<td>Resolved</td>");
+				}
+				else{
+					out.println("<td>Not Resolved Yet</td>");
+				} 
 				out.println("</tr>");
 			}
 			out.println("</table>");

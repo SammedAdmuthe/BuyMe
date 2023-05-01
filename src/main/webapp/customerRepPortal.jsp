@@ -147,7 +147,43 @@ td{
 </div>
 
 <div id="userQueries" class="tabcontent">
-Hello
+<div style="width: 100%; margin-top: 10px;">
+	 <%
+		DBHelper db1 = new DBHelper();	
+		Connection connection1 = db1.getConnection();
+		String idName = "entry";
+		try{
+			Statement stmt1 = connection1.createStatement();
+			ResultSet rs1 = stmt1.executeQuery("SELECT * from userqueries;");
+			out.println("<div style='width: 100%;'>");
+			//out.println("");
+			out.println("<table id='userQueriesTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>User</th><th>Query</th><th>Resolution and Query Status</th></tr>");
+			while(rs1.next()){
+				out.println("<tr><td>"+ rs1.getString("username")+"</td>");
+				out.println("<td>"+ rs1.getString("query")+"</td>");		
+				if(Integer.parseInt(rs1.getString("queryStatus")) == 0){
+					out.println("<td> <form method='post' style='display:flex; justify-content: space-between' action='resolveQuery.jsp?queryid="
+				+rs1.getString("queryId")+"'> <input placeholder='Enter answer' id='"+idName+rs1.getString("queryId")
+				+"' name='"+idName+rs1.getString("queryId")+"'/>&nbsp; &nbsp;<input  type='submit' value = 'Submit and Mark Resolved'> </form></td>");
+					
+				}
+				else{
+					out.println("<td><div style='display:flex; justify-content: space-between'><span style='margin-left: 0px'><b>Resolution:</b>"+ rs1.getString("answer")+"</span>&nbsp; &nbsp; <span><b>Status:</b>Resolved</span></div></td>");
+				}
+				
+				out.println("</tr>");
+			}
+			out.println("</table>");
+			//out.println("</form>");
+			out.println("</div>");
+			
+		}
+		catch (Exception e) {
+	 		out.println(e.getMessage());
+
+		}
+		%> 
+	</div>
 </div>
 	
 	
