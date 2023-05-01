@@ -47,7 +47,7 @@
             out.println("<div style='text-align: center; border: solid 1px #ededed; height: 200px; width: 250px'>");
             out.println("<h2>Total Earnings</h2>");
             out.println("<br>");out.println("<br>");
-            String sql = "SELECT COUNT('bidPrice') as ct FROM bidding WHERE didWin=1";
+            String sql = "select sum(b.bidPrice) as ct from bidding as b where didWin=1;";
             ResultSet rs = statement.executeQuery(sql);
             while(rs.next()){
                 String total_sales = rs.getString("ct");
