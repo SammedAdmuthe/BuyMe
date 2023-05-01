@@ -113,6 +113,8 @@ td{
   <button class="tablinks" onclick="openCity(event, 'allUsers')">All Users</button>
   <button class="tablinks" onclick="openCity(event, 'userQueries')">User Queries</button>
   <button class="tablinks" onclick="openCity(event, 'allAuctions')">All Auctions</button>
+   <button class="tablinks" onclick="openCity(event, 'allBids')">All Bids</button>
+  
 
 </div>
 
@@ -203,6 +205,38 @@ td{
 				out.println("<tr><td>"+ rs2.getString("username")+"</td>");
 				out.println("<td>"+ rs2.getInt("auctionId")+"</td>");		
 				out.println("<td>"+ "<a href='deleteAuction.jsp?auctionId="+rs2.getInt("auctionId")+"'> Delete </td>");
+				out.println("</tr>");
+			}
+			out.println("</table>");
+			//out.println("</form>");
+			out.println("</div>");
+			
+		}
+		catch (Exception e) {
+	 		out.println(e.getMessage());
+
+		}
+		%> 
+	</div>
+</div>
+
+<div id="allBids" class="tabcontent">
+<div style="width: 100%; margin-top: 10px;">
+	 <%
+		DBHelper db3 = new DBHelper();	
+		Connection connection3 = db3.getConnection();
+		String idName3 = "entry";
+		try{
+			Statement stmt3 = connection1.createStatement();
+			ResultSet rs3 = stmt3.executeQuery("SELECT * from auction a join bidding b on a.auctionId=b.auctionId;");
+			out.println("<div style='width: 100%;'>");
+			//out.println("");
+			out.println("<table id='allBidsTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>User</th><th>AuctionId</th><th>Bid Id</th><th>Take Action</th></tr>");
+			while(rs3.next()){
+				out.println("<tr><td>"+ rs3.getString("username")+"</td>");
+				out.println("<td>"+ rs3.getInt("auctionId")+"</td>");		
+				out.println("<td>"+ rs3.getInt("bidId")+"</td>");		
+				out.println("<td>"+ "<a href='deleteBid.jsp?auctionId="+rs3.getInt("auctionId")+"&bidId="+rs3.getInt("bidId")+"'> Delete </td>");
 				out.println("</tr>");
 			}
 			out.println("</table>");
