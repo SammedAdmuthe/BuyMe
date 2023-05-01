@@ -40,12 +40,11 @@ td{
 	Statement stmt = connection.createStatement();
 	String productID = request.getParameter("productid");
  	ResultSet rs = stmt.executeQuery("select * from product where productId = " + "'"+productID+"'");
-	while(rs.next()){
-		out.println("Dimension - " + rs.getString("dimensions")+"</br>");
-		out.println("Weight - " + rs.getString("weight") +"</br>");
-		out.println("ProductImages - " + rs.getString("productImages") +"</br>"+"</br>");
-/* 		out.println(rs.getString("dimensions"));
- */	}
+ 	rs.next();
+
+ 	String productCategory = rs.getString("categoryName");
+ 	//out.println(productCategory);
+ 	
 	String auctionId = request.getParameter("auctionid");
 	ResultSet rs1 = stmt.executeQuery("select currentMaxBid, incrementPrice, initialPrice from auction where auctionId = " + "'"+auctionId+"'");
 	rs1.next();
@@ -176,6 +175,39 @@ td{
 	}
 		
 	%>
+	<h1>Similiar Items</h1>
+	<%
+	DBHelper dbhelper3 = new DBHelper();
+	Connection connection3 = dbhelper3.getConnection();
+ 	
+ 	try{
+ 		Statement stmt2 = connection2.createStatement();
+		ResultSet rs2 = stmt2.executeQuery("select * from product where categoryName = '" +productCategory+ "' AND productId != "+productID+";");
+		out.println("<div style='width: 100%;'>");
+		out.println("<table id='biddersTable' style='width: calc(100% - 25px); margin-left: 10px; '> <tr><th>Product </th><th>Sold By</th><th>Category</th></tr>");
+		while(rs2.next()){
+			out.println("<tr><td>"+ rs2.getString("productName")+"</td>");
+			out.println("<td>"+ rs2.getString("username")+"</td>");
+			out.println("<td>"+ rs2.getString("categoryName")+"</td>");
+			/* if(rs2.getString("didWin") == null){
+				out.println("<td>No</td>");
+			}
+			else{
+				out.println("<td>"+ rs2.getString("didWin")+"</td>");
+			} */			
+			out.println("</tr>");
+		}
+		out.println("</table>");
+		out.println("</div>");
+
+	}
+	catch (Exception e) {
+ 		out.println(e.getMessage());
+
+	}
+		
+	%>
+	
 </body>
 <script type="text/javascript">
 
