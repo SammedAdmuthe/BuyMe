@@ -64,6 +64,8 @@
             out.println("<br>");out.println("<br>");
             sql = "WITH T1 AS ( SELECT P.productName as productName, B.bidPrice as price FROM product as P natural join auction as A natural join bidding as B where B.didWin = 1 ) SELECT T1.productName as product, sum(T1.price) as price FROM T1 GROUP BY T1.productName ORDER BY sum(T1.price) DESC";
             rs = statement.executeQuery(sql);
+            System.out.println("Admin Page =");
+
             while(rs.next()){
                 String product_name = rs.getString("product");
                 int earnings = rs.getInt("price");

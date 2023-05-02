@@ -267,7 +267,7 @@ td{
 					if(secretMinBid <= currentMax)
 					{
 						//Bid won by maxBidUserName
-						out.println("<td><a href='product.jsp?auctionid="+rs1.getString("auctionId")+"&productid="+ rs1.getInt("productId")+"'> Bid won by "+rs1.getString("maxBidUserName")+" </td>");
+						out.println("<td> Bid won by "+rs1.getString("maxBidUserName")+" </td>");
 						Statement stmt5 = connection1.createStatement();
 						ResultSet rs5 = stmt5.executeQuery("Select * from enduser e where e.username='"+rs1.getString("maxBidUserName")+"'");
 						PreparedStatement ps = connection.prepareStatement("update bidding set didWin = 1 where auctionId = ? and username = ?");
