@@ -62,7 +62,7 @@
             out.println("<div style='text-align: center; border: solid 1px #ededed; height: 200px; width: 250px'>");
             out.println("<h2>Earnings per item</h2>");           
             out.println("<br>");out.println("<br>");
-            sql = "WITH T1 AS ( SELECT P.productName as productName, B.bidPrice as price FROM product as P natural join auction as A natural join bidding as B where B.didWin = 1 ) SELECT T1.productName as product, sum(T1.price) as price FROM T1 GROUP BY T1.productName ORDER BY sum(T1.price) DESC";
+            sql = "WITH T1 AS ( SELECT P.productName as productName, B.bidPrice as price FROM product as P join auction as A join bidding as B on A.auctionId = B.auctionId and P.productId = A.productId where B.didWin = 1 ) SELECT T1.productName as product, sum(T1.price) as price FROM T1 GROUP BY T1.productName ORDER BY sum(T1.price) DESC;";
             rs = statement.executeQuery(sql);
             System.out.println("Admin Page =");
 
@@ -79,7 +79,7 @@
             // Earnings per Item Type
             out.println("<div style='text-align: center; border: solid 1px #ededed; height: 200px; width: 250px'>");
             out.println("<h2>Earnings per Item Type</h2>");
-            sql = "WITH T1 as ( select C.categoryName, B.bidPrice from category as C natural join product as P natural join auction as A natural join bidding as B where didWin = 1 ) SELECT T1.categoryName as category, sum(T1.bidPrice) as earnings FROM T1 GROUP BY T1.categoryName ORDER BY sum(T1.bidPrice) DESC";
+            sql = "WITH T1 as ( select C.categoryName, B.bidPrice from category as C join product as P join auction as A join bidding as B on C.categoryName = P.categoryName and P.productId = A.productId and A.auctionId = B.auctionId where didWin = 1 ) SELECT T1.categoryName as category, sum(T1.bidPrice) as earnings FROM T1 GROUP BY T1.categoryName ORDER BY sum(T1.bidPrice) DESC;";
             rs = statement.executeQuery(sql);
             while(rs.next()){
                 String category_name = rs.getString("category");
@@ -96,7 +96,7 @@
             out.println("<div style='display: flex; margin-left: 22%;'>");
             out.println("<div style='text-align: center; border: solid 1px #ededed; height: 200px; width: 250px'>");
             out.println("<h2>Earnings per Seller</h2>");
-            sql = "WITH T1 AS ( SELECT A.username as username, B.bidPrice as price from auction as A natural join bidding as B where B.didWin = 1 ) SELECT T1.username, sum(T1.price) as earnings FROM T1 GROUP BY T1.username ORDER BY sum(T1.price) DESC;";
+            sql = "WITH T1 AS ( SELECT A.username as username, B.bidPrice as price from auction as A join bidding as B on A.auctionId = B.auctionId where B.didWin = 1 ) SELECT T1.username, sum(T1.price) as earnings FROM T1 GROUP BY T1.username ORDER BY sum(T1.price) DESC;";
             rs = statement.executeQuery(sql);
             while(rs.next()){
                 String username = rs.getString("username");
@@ -111,8 +111,8 @@
             // Best Selling Item
             out.println("<div style='text-align: center; border: solid 1px #ededed; height: 200px; width: 250px'>");
             out.println("<h2>Best Selling Item</h2>");
-            sql = "WITH T1 as ( SELECT P.productName as productName, B.bidPrice as price FROM bidding as B NATURAL JOIN auction as A NATURAL JOIN product as P WHERE B.didWin=1 ) SELECT T1.productName as product, sum(T1.price) as earnings FROM T1 GROUP BY T1.productName ORDER BY sum(T1.price) DESC";
-            rs = statement.executeQuery(sql);
+             sql = "WITH T1 as ( SELECT P.productName as productName, B.bidPrice as price FROM bidding as B JOIN auction as A JOIN product as P ON B.auctionId = A.auctionId AND A.productId = P.productId WHERE B.didWin=1 ) SELECT T1.productName as product, sum(T1.price) as earnings FROM T1 GROUP BY T1.productName ORDER BY sum(T1.price) DESC;";
+             rs = statement.executeQuery(sql);
             while(rs.next()){
                 String product_name = rs.getString("product");
                 int maxCount = rs.getInt("earnings");
@@ -127,7 +127,7 @@
             // Best Buyers
             out.println("<div style='text-align: center; border: solid 1px #ededed; height: 200px; width: 250px'>");
             out.println("<h2>Best Buyers</h2>");
-            sql = "WITH T1 as ( SELECT A.username, B.bidPrice as price FROM auction as A NATURAL JOIN bidding as B WHERE B.didWin = 1 ) SELECT T1.username as username, sum(T1.price) as earnings FROM T1 group by T1.username ORDER BY sum(T1.price) DESC LIMIT 5";
+            sql = "WITH T1 as ( SELECT A.username, B.bidPrice as price FROM auction as A JOIN bidding as B ON A.auctionId = B.auctionId WHERE B.didWin = 1 ) SELECT T1.username as username, sum(T1.price) as earnings FROM T1 group by T1.username ORDER BY sum(T1.price) DESC LIMIT 5;";
             rs = statement.executeQuery(sql);
             while(rs.next()){
                 String username = rs.getString("username");
